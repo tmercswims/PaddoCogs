@@ -103,6 +103,8 @@ class Experience:
                     message = '`Listening to {0}`'.format(arguments[0])
                 else:
                     message = '`Value must be either True or False.`'
+            else:
+                message = '`Not in there yet`'
         await self.bot.say(message)
 
 
