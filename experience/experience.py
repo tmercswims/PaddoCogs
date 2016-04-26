@@ -20,29 +20,31 @@ class Experience:
             return False
 
     async def add_xp(self, message):
-        # if not message.author.bot:
-            prefixes = self.settings['PREFIXES']
-            content = re.sub(r"http\S+", "", message.content)
-            valid = True
-            for prefix in prefixes:
-                if prefix in content[0:5]:
-                    valid = False
-            if valid:
-                file = 'data/experience/experience.json'
-                experience = fileIO(file, "load")
-                server = message.server.id
-                author_mention = message.author.mention
-                author = message.author.name
-                if server not in experience:
-                    experience[server] = {}
-                if author_mention not in experience[server]:
-                    experience[server][author_mention] = {}
-                    experience[server][author_mention]['IGNORE'] = False
-                    experience[server][author_mention]['TOTAL_XP'] = 0
-                if not experience[server][author_mention]['IGNORE']:
-                    experience[server][author_mention]['USERNAME'] = author
-                    experience[server][author_mention]['TOTAL_XP'] += int(len(content))
-                fileIO(file, "save", experience)
+            try:
+                prefixes = self.settings['PREFIXES']
+                content = re.sub(r"http\S+", "", message.content)
+                valid = True
+                for prefix in prefixes:
+                    if prefix in content[0:5]:
+                        valid = False
+                if valid:
+                    file = 'data/experience/experience.json'
+                    experience = fileIO(file, "load")
+                    server = message.server.id
+                    author_mention = message.author.mention
+                    author = message.author.name
+                    if server not in experience:
+                        experience[server] = {}
+                    if author_mention not in experience[server]:
+                        experience[server][author_mention] = {}
+                        experience[server][author_mention]['IGNORE'] = False
+                        experience[server][author_mention]['TOTAL_XP'] = 0
+                    if not experience[server][author_mention]['IGNORE']:
+                        experience[server][author_mention]['USERNAME'] = author
+                        experience[server][author_mention]['TOTAL_XP'] += int(len(content))
+                    fileIO(file, "save", experience)
+            except:
+                pass
 
     @commands.command(pass_context=True, aliases=["shamelist", "score"])
     async def xp(self, context, *userid: str):

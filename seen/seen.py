@@ -10,22 +10,25 @@ class Seen:
         self.seen_path = 'data/seen/seen.json'
 
     async def seen_loop(self, message):
-        seen = fileIO(self.seen_path, "load")
-        server_id = message.server.id
-        channel_mention = message.channel.mention
-        user_id = message.author.mention
-        user_name = message.author.name
-        last_msg = message.content
-        timestamp = message.timestamp
-        if server_id not in seen:
-            seen[server_id] = {}
-        if user_id not in seen[server_id]:
-            seen[server_id][user_id] = {}
-        seen[server_id][user_id]['USERNAME'] = user_name
-        seen[server_id][user_id]['TIMESTAMP'] = str(timestamp)[:-7]
-        seen[server_id][user_id]['MESSAGE'] = last_msg
-        seen[server_id][user_id]['CHANNEL'] = channel_mention
-        fileIO(self.seen_path, "save", seen)
+        try:
+            seen = fileIO(self.seen_path, "load")
+            server_id = message.server.id
+            channel_mention = message.channel.mention
+            user_id = message.author.mention
+            user_name = message.author.name
+            last_msg = message.content
+            timestamp = message.timestamp
+            if server_id not in seen:
+                seen[server_id] = {}
+            if user_id not in seen[server_id]:
+                seen[server_id][user_id] = {}
+            seen[server_id][user_id]['USERNAME'] = user_name
+            seen[server_id][user_id]['TIMESTAMP'] = str(timestamp)[:-7]
+            seen[server_id][user_id]['MESSAGE'] = last_msg
+            seen[server_id][user_id]['CHANNEL'] = channel_mention
+            fileIO(self.seen_path, "save", seen)
+        except:
+            pass
 
     @commands.command(pass_context=True, no_pm=True, aliases=['s'])
     async def seen(self, context, username: str):
