@@ -13,16 +13,15 @@ class Away:
     async def listener(self, message):
         tmp = {}
         for mention in message.mentions:
-            tmp[mention.mention] = True
+            tmp[mention] = True
         if message.author.id != self.bot.user.id:
             data = fileIO(self.away_data, 'load')
             for mention in tmp:
-                print(mention)
-                if mention in data:
-                    if data[mention]['MESSAGE'] is True:
-                        msg = '{} is currently away.'.format(mention)
+                if mention.mention in data:
+                    if data[mention.mention]['MESSAGE'] is True:
+                        msg = '{} is currently away.'.format(mention.name)
                     else:
-                        msg = '{} is currently away and has set a personal message: {}'.format(mention, data[mention]['MESSAGE'])
+                        msg = '{} is currently away and has set a personal message: {}'.format(mention.name, data[mention.mention]['MESSAGE'])
                     await self.bot.send_message(message.channel, msg)
 
     @commands.command(pass_context=True)
