@@ -1,6 +1,7 @@
 from discord.ext import commands
 from .utils.dataIO import fileIO
 from .utils import checks
+from __main__ import send_cmd_help
 import os
 import re
 
@@ -46,18 +47,24 @@ class Experience:
             except:
                 pass
 
-    @commands.command(pass_context=True, aliases=["shamelist", "score"])
-    async def xp(self, context, *userid: str):
-        """Show the highscores"""
+    @commands.group(pass_context=True)
+    async def xp(self, context):
+        """Keeps track of xp, counted by character"""
+        if context.invoked_subcommand is None:
+            await send_cmd_help(context)
+
+    @xp.command(pass_context=True)
+    async def show(self, context, *user: str):
+        """[@username] - shows top 15 when left empty"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
         experience = experience[server]
-        if userid:
-            if userid[0] in experience:
-                message = '`{0} has {1} XP.`'.format(experience[userid[0]]['USERNAME'], experience[userid[0]]['TOTAL_XP'])
+        if user:
+            if user[0] in experience:
+                message = '`{0} has {1} XP.`'.format(experience[user[0]]['USERNAME'], experience[user[0]]['TOTAL_XP'])
             else:
-                message = '`\'{0}\' is not in my database.`'.format(userid[0])
+                message = '`\'{0}\' is not in my database.`'.format(user[0])
         else:
             xp = sorted(experience, key=lambda x: (experience[x]['TOTAL_XP']), reverse=True)
             message = '```{0} Highscores.\n\n'.format(context.message.server.name)
@@ -68,9 +75,10 @@ class Experience:
             message += '```'
         await self.bot.say(message)
 
-    @commands.command(pass_context=True)
+    @xp.command(pass_context=True)
     @checks.mod_or_permissions(manage_roles=True)
-    async def xpset(self, context, *arguments: str):
+    async def set(self, context, *arguments: str):
+        """[@username] [n]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
@@ -87,9 +95,10 @@ class Experience:
                     message = '`Value must be an integer.`'
         await self.bot.say(message)
 
-    @commands.command(pass_context=True)
+    @xp.command(pass_context=True)
     @checks.mod_or_permissions(manage_roles=True)
-    async def xpignore(self, context, *arguments: str):
+    async def ignore(self, context, *arguments: str):
+        """[@username] [true|false]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
