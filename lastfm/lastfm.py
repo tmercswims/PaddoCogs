@@ -271,11 +271,11 @@ Will remember your username after setting one. [p]lastfm last @username will bec
 
     @commands.command(pass_context=True, aliases=['setlastfm'])
     @checks.is_owner()
-    async def setlastfmapi(self, context, *arguments: str):
+    async def setlastfmapi(self, context, *key: str):
         """Sets the Last.fm API key - for bot owner only."""
         settings = fileIO(self.settings_file, "load")
-        if arguments:
-            settings['LASTFM_API_KEY'] = arguments[0]
+        if key:
+            settings['LASTFM_API_KEY'] = key[0]
             fileIO(self.settings_file, "save", settings)
 
 
