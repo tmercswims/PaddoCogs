@@ -11,17 +11,19 @@ class Away:
         self.away_data = 'data/away/away.json'
 
     async def listener(self, message):
-        content = message.content.split(' ')
+        tmp = {}
+        for mention in message.mentions:
+            tmp[mention.mention] = True
         if message.author.id != self.bot.user.id:
-            for part in content:
-                if part.startswith('<@'):
-                    data = fileIO(self.away_data, 'load')
-                    if part in data:
-                        if data[part]['MESSAGE'] is True:
-                            msg = '{} is currently away.'.format(part)
-                        else:
-                            msg = '{} is currently away and has set a personal message: {}'.format(part, data[part]['MESSAGE'])
-                        await self.bot.send_message(message.channel, msg)
+            data = fileIO(self.away_data, 'load')
+            for mention in tmp:
+                print(mention)
+                if mention in data:
+                    if data[mention]['MESSAGE'] is True:
+                        msg = '{} is currently away.'.format(mention)
+                    else:
+                        msg = '{} is currently away and has set a personal message: {}'.format(mention, data[mention]['MESSAGE'])
+                    await self.bot.send_message(message.channel, msg)
 
     @commands.command(pass_context=True)
     async def away(self, context, *message: str):
