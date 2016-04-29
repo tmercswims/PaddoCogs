@@ -7,16 +7,19 @@ class In_voice:
         self.bot = bot
 
     async def listener(self, before, after):
-        server = after.server
         try:
-            for role in server.roles:
-                if role.name == 'voice':
-                    if role in after.roles:
-                        await self.bot.remove_roles(after, role)
-                    elif role not in after.roles:
-                        await self.bot.add_roles(after, role)
-        except discord.errors.Forbidden:
-            print('COG DEBUG [INVOICE]: No permissions to change roles.')
+            server = after.server
+            try:
+                for role in server.roles:
+                    if role.name == 'voice':
+                        if role in after.roles and after.voice_channel is None:
+                            await self.bot.remove_roles(after, role)
+                        elif role not in before.roles and role not in after.roles:
+                            await self.bot.add_roles(after, role)
+            except discord.errors.Forbidden:
+                print('DEBUG: No permissions to change roles.')
+        except Exception as e:
+            print('Houston, we have a problem: {}'.format(e))
 
 
 def setup(bot):
