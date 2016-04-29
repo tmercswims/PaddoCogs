@@ -77,46 +77,41 @@ class Experience:
 
     @xp.command(pass_context=True)
     @checks.mod_or_permissions(manage_roles=True)
-    async def set(self, context, *arguments: str):
+    async def set(self, context, username: str, value: str):
         """[@username] [n]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
-        if arguments:
-            if arguments[0] in experience[server]:
-                if arguments[1]:
-                    if self.is_int(arguments[1]):
-                        experience[server][arguments[0]]['TOTAL_XP'] = int(arguments[1])
-                        fileIO(file, "save", experience)
-                        message = '`XP set`'
-                    else:
-                        message = '`Value must be an integer.`'
-                else:
-                    message = '`Value must be an integer.`'
-        await self.bot.say(message)
+        if username in experience[server]:
+            if self.is_int(value):
+                experience[server][username]['TOTAL_XP'] = int(value)
+                fileIO(file, "save", experience)
+                message = '`XP set`'
+            else:
+                message = '`Value must be an integer.`'
+        if len(message) > 0:
+            await self.bot.say(message)
 
     @xp.command(pass_context=True)
     @checks.mod_or_permissions(manage_roles=True)
-    async def ignore(self, context, *arguments: str):
+    async def ignore(self, context, username: str, value: str):
         """[@username] [true|false]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
-        if arguments:
-            if arguments[0] in experience[server]:
-                if arguments[1].upper() == 'TRUE':
-                    experience[server][arguments[0]]['IGNORE'] = True
-                    fileIO(file, "save", experience)
-                    message = '`Ignoring {0}`'.format(arguments[0])
-                elif arguments[1].upper() == 'FALSE':
-                    experience[server][arguments[0]]['IGNORE'] = False
-                    fileIO(file, "save", experience)
-                    message = '`Listening to {0}`'.format(arguments[0])
-                else:
-                    message = '`Value must be either True or False.`'
+        if username in experience[server]:
+            if value.upper() == 'TRUE':
+                experience[server][username]['IGNORE'] = True
+                fileIO(file, "save", experience)
+                message = '`Ignoring {0}`'.format(username)
+            elif value.upper() == 'FALSE':
+                experience[server][username]['IGNORE'] = False
+                fileIO(file, "save", experience)
+                message = '`Done`'
             else:
-                message = '`Not in there yet`'
-        await self.bot.say(message)
+                message = '`Value must be either True or False.`'
+        if len(message) > 0:
+            await self.bot.say(message)
 
 
 def check_folder():
