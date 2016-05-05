@@ -82,7 +82,7 @@ class Vote:
 
     @vote.command(no_pm=True)
     async def old(self, *pid: str):
-        """Retrieve an old poll with a given id."""
+        """Retrieve an old poll with a given id"""
         settings = fileIO(self.poll_data, "load")
         if pid:
             pid = pid[0]
