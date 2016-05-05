@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from .utils.dataIO import fileIO
 from .utils import checks
@@ -25,6 +26,7 @@ class Experience:
                 prefixes = self.settings['PREFIXES']
                 content = re.sub(r"http\S+", "", message.content)
                 valid = True
+
                 for prefix in prefixes:
                     if prefix in content[0:5]:
                         valid = False
@@ -61,10 +63,12 @@ class Experience:
         server = context.message.server.id
         experience = experience[server]
         if user:
-            if user[0] in experience:
-                message = '`{0} has {1} XP.`'.format(experience[user[0]]['USERNAME'], experience[user[0]]['TOTAL_XP'])
+
+            user_patch = user[0].replace('!', '')
+            if user_patch in experience:
+                message = '`{0} has {1} XP.`'.format(experience[user_patch]['USERNAME'], experience[user_patch]['TOTAL_XP'])
             else:
-                message = '`\'{0}\' is not in my database.`'.format(user[0])
+                message = '`\'{0}\' is not in my database.`'.format(user_patch)
         else:
             xp = sorted(experience, key=lambda x: (experience[x]['TOTAL_XP']), reverse=True)
             message = '```{0} Highscores.\n\n'.format(context.message.server.name)
@@ -82,9 +86,10 @@ class Experience:
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
-        if username in experience[server]:
+        user_patch = username.replace('!', '')
+        if user_patch in experience[server]:
             if self.is_int(value):
-                experience[server][username]['TOTAL_XP'] = int(value)
+                experience[server][user_patch]['TOTAL_XP'] = int(value)
                 fileIO(file, "save", experience)
                 message = '`XP set`'
             else:
@@ -99,13 +104,14 @@ class Experience:
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
-        if username in experience[server]:
+        user_patch = username.replace('!', '')
+        if user_patch in experience[server]:
             if value.upper() == 'TRUE':
-                experience[server][username]['IGNORE'] = True
+                experience[server][user_patch]['IGNORE'] = True
                 fileIO(file, "save", experience)
-                message = '`Ignoring {0}`'.format(username)
+                message = '`Ignoring`'
             elif value.upper() == 'FALSE':
-                experience[server][username]['IGNORE'] = False
+                experience[server][user_patch]['IGNORE'] = False
                 fileIO(file, "save", experience)
                 message = '`Done`'
             else:
