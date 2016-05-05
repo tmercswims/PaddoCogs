@@ -29,13 +29,16 @@ class LogTools:
             timestamp = str(message.timestamp)[:-7]
             log_msg = '[{}] {} ({}): {}'.format(timestamp, author, author_mention, content)
             log.append(log_msg)
-        t = self.file.format(str(time()))
-        with open(t, encoding='utf-8', mode="w") as f:
-            for message in log[::-1]:
-                f.write(message+'\n')
-        f.close()
-        await self.bot.send_file(context.message.channel, t)
-        os.remove(t)
+        try:
+            t = self.file.format(str(time()))
+            with open(t, encoding='utf-8', mode="w") as f:
+                for message in log[::-1]:
+                    f.write(message+'\n')
+            f.close()
+            await self.bot.send_file(context.message.channel, t)
+            os.remove(t)
+        except Exception as error:
+            print(error)
 
     @logs.command(pass_context=True, no_pm=True, aliases=['rp'])
     @checks.mod_or_permissions(manage_messages=True)
@@ -48,13 +51,16 @@ class LogTools:
             timestamp = str(message.timestamp)[:-7]
             log_msg = '[{}] {}: {}'.format(timestamp, author, content)
             log.append(log_msg)
-        t = self.file.format(str(time()))
-        with open(t, encoding='utf-8', mode="w") as f:
-            for message in log[::-1]:
-                f.write(message+'\n')
-        f.close()
-        await self.bot.send_file(context.message.channel, t)
-        os.remove(t)
+        try:
+            t = self.file.format(str(time()))
+            with open(t, encoding='utf-8', mode="w") as f:
+                for message in log[::-1]:
+                    f.write(message+'\n')
+            f.close()
+            await self.bot.send_file(context.message.channel, t)
+            os.remove(t)
+        except Exception as error:
+            print(error)
 
 
 def check_folder():
