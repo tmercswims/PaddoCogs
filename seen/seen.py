@@ -35,6 +35,7 @@ class Seen:
         """seen <@username>"""
         seen = fileIO(self.seen_path, "load")
         server_id = context.message.server.id
+        username = username.replace('!', '')
         if server_id in seen:
             if username in seen[server_id]:
                 timestamp = seen[server_id][username]['TIMESTAMP']

@@ -66,11 +66,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
+                user_patch = username[0].replace('!', '')
                 settings = fileIO(self.settings_file, 'load')
-                if username[0][2:-1] in settings['USERS']:
-                    username = settings['USERS'][username[0][2:-1]]
+                if user_patch[2:-1] in settings['USERS']:
+                    username = settings['USERS'][user_patch[2:-1]]
                 else:
-                    username = username[0]
+                    username = user_patch
             try:
                 payload = self.payload
                 payload['method'] = 'user.getInfo'
@@ -102,15 +103,16 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Shows the last 10 played songs"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, "load")
+                settings = fileIO(self.settings_file, 'load')
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
+                user_patch = username[0].replace('!', '')
                 settings = fileIO(self.settings_file, 'load')
-                if username[0][2:-1] in settings['USERS']:
-                    username = settings['USERS'][username[0][2:-1]]
+                if user_patch[2:-1] in settings['USERS']:
+                    username = settings['USERS'][user_patch[2:-1]]
                 else:
-                    username = username[0]
+                    username = user_patch
             try:
                 payload = self.payload
                 payload['method'] = 'user.getRecentTracks'
@@ -152,15 +154,16 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 most played songs"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, "load")
+                settings = fileIO(self.settings_file, 'load')
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
+                user_patch = username[0].replace('!', '')
                 settings = fileIO(self.settings_file, 'load')
-                if username[0][2:-1] in settings['USERS']:
-                    username = settings['USERS'][username[0][2:-1]]
+                if user_patch[2:-1] in settings['USERS']:
+                    username = settings['USERS'][user_patch[2:-1]]
                 else:
-                    username = username[0]
+                    username = user_patch
             try:
                 payload = self.payload
                 payload['method'] = 'user.getTopTracks'
@@ -192,15 +195,16 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 played artists"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, "load")
+                settings = fileIO(self.settings_file, 'load')
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
+                user_patch = username[0].replace('!', '')
                 settings = fileIO(self.settings_file, 'load')
-                if username[0][2:-1] in settings['USERS']:
-                    username = settings['USERS'][username[0][2:-1]]
+                if user_patch[2:-1] in settings['USERS']:
+                    username = settings['USERS'][user_patch[2:-1]]
                 else:
-                    username = username[0]
+                    username = user_patch
             try:
                 payload = self.payload
                 payload['method'] = 'user.getTopArtists'
@@ -233,15 +237,16 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 played albums"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, "load")
+                settings = fileIO(self.settings_file, 'load')
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
+                user_patch = username[0].replace('!', '')
                 settings = fileIO(self.settings_file, 'load')
-                if username[0][2:-1] in settings['USERS']:
-                    username = settings['USERS'][username[0][2:-1]]
+                if user_patch[2:-1] in settings['USERS']:
+                    username = settings['USERS'][user_patch[2:-1]]
                 else:
-                    username = username[0]
+                    username = user_patch
             try:
                 payload = self.payload
                 payload['method'] = 'user.getTopAlbums'
