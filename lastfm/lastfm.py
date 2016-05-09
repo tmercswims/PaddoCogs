@@ -274,14 +274,15 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             message = 'No API key set. Get one at http://www.last.fm/api'
         await self.bot.say('```{}```'.format(message))
 
-    @commands.command(pass_context=True, aliases=['setlastfm'])
+    @lastfm.command(pass_context=True)
     @checks.is_owner()
-    async def setlastfmapi(self, context, *key: str):
+    async def apikey(self, context, *key: str):
         """Sets the Last.fm API key - for bot owner only."""
         settings = fileIO(self.settings_file, "load")
         if key:
             settings['LASTFM_API_KEY'] = key[0]
             fileIO(self.settings_file, "save", settings)
+            await self.bot.say('`Done`')
 
 
 def check_folder():
