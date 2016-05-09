@@ -46,16 +46,16 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             except Exception as e:
                 message = 'Something went terribly wrong! [{}]'.format(e)
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 settings = fileIO(self.settings_file, "load")
                 settings['USERS'][context.message.author.id] = username[0]
                 username = username[0]
                 fileIO(self.settings_file, "save", settings)
-                message = '`Username set`'
+                message = 'Username set'
         else:
-            message = '`Now come on, I need your username!`'
-        await self.bot.say(message)
+            message = 'Now come on, I need your username!'
+        await self.bot.say('```{}```'.format(message))
 
     @lastfm.command(pass_context=True, no_pm=True)
     async def info(self, context, *username: str):
@@ -86,17 +86,17 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             except Exception as e:
                 message = 'Something went terribly wrong! [{}]'.format(e)
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 user = data['user']['name']
                 playcount = data['user']['playcount']
                 registered = data['user']['registered']['unixtime']
                 registered = datetime.datetime.fromtimestamp(int(registered)).strftime('%Y-%m-%d %H:%M:%S')
                 profile = data['user']['url']
-                message = '```Last.fm profile of {}\n\nScrobbles: {}\nRegistered: {}\nProfile: {}```'.format(user, playcount, registered, profile)
+                message = 'Last.fm profile of {}\n\nScrobbles: {}\nRegistered: {}\nProfile: {}'.format(user, playcount, registered, profile)
         else:
             message = 'No API key set for Last.fm. Get one at http://www.last.fm/api'
-        await self.bot.say(message)
+        await self.bot.say('```{}```'.format(message))
 
     @lastfm.command(pass_context=True, no_pm=True, aliases=['lp'])
     async def last(self, context, *username: str):
@@ -127,7 +127,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             except Exception as e:
                 message = 'Something went terribly wrong! [{}]'.format(e)
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 user = data['recenttracks']['@attr']['user']
                 message = '```Last 10 songs played by {}\n\n'.format(user)
@@ -178,7 +178,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             except Exception as e:
                 message = 'Something went terribly wrong! [{}]'.format(e)
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 user = data['toptracks']['@attr']['user']
                 message = 'Top songs played by {0}\n\n'.format(user)
@@ -186,6 +186,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
                     artist = track['artist']['name']
                     song = track['name']
                     message += '{} {} - {}\n'.format(str(i).ljust(4), artist, song)
+
         else:
             message = 'No API key set for Last.fm. Get one at http://www.last.fm/api'
         await self.bot.say('```{}```'.format(message))
@@ -220,17 +221,17 @@ Will remember your username after setting one. [p]lastfm last @username will bec
                 message = 'Something went terribly wrong! [{}]'.format(e)
 
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 user = data['topartists']['@attr']['user']
-                message = '```Top artists played by {}\n\n'.format(user)
+                message = 'Top artists played by {}\n\n'.format(user)
                 for i, artist in enumerate(data['topartists']['artist'], 1):
                     artist_a = artist['name']
                     message += '{} {}\n'.format(str(i).ljust(4), artist_a)
-                message += '```'
+
         else:
             message = 'No API key set for Last.fm. Get one at http://www.last.fm/api'
-        await self.bot.say(message)
+        await self.bot.say('```{}```'.format(message))
 
     @lastfm.command(pass_context=True, no_pm=True, aliases=['albums', 'tab'])
     async def topalbums(self, context, *username: str):
@@ -262,7 +263,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             except Exception as e:
                 message = 'Something went terribly wrong! [{}]'.format(e)
             if 'error' in data:
-                message = '`{}`'.format(data['message'])
+                message = '{}'.format(data['message'])
             else:
                 user = data['topalbums']['@attr']['user']
                 message = 'Top albums played by {0}\n\n'.format(user)
@@ -282,7 +283,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         if key:
             settings['LASTFM_API_KEY'] = key[0]
             fileIO(self.settings_file, "save", settings)
-            await self.bot.say('`Done`')
+            await self.bot.say('```Done```')
 
 
 def check_folder():
