@@ -11,5 +11,5 @@ class Crony:
 
 
 def setup(bot):
-    n = Cront(bot)
+    n = Crony(bot)
     bot.add_cog(n)
