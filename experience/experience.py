@@ -34,8 +34,9 @@ class Experience:
                     file = 'data/experience/experience.json'
                     experience = fileIO(file, "load")
                     server = message.server.id
-                    author_mention = message.author.mention
-                    author = message.author.name
+                    author_mention = message.author.mention.replace('!', '')
+                    author_name = message.author.name
+                    author_nick = message.author.nick
                     if server not in experience:
                         experience[server] = {}
                     if author_mention not in experience[server]:
@@ -43,7 +44,10 @@ class Experience:
                         experience[server][author_mention]['IGNORE'] = False
                         experience[server][author_mention]['TOTAL_XP'] = 0
                     if not experience[server][author_mention]['IGNORE']:
-                        experience[server][author_mention]['USERNAME'] = author
+                        if message.author.nick is not None:
+                            experience[server][author_mention]['USERNAME'] = author_nick
+                        else:
+                            experience[server][author_mention]['USERNAME'] = author_name
                         experience[server][author_mention]['TOTAL_XP'] += int(len(content))
                     fileIO(file, "save", experience)
             except:

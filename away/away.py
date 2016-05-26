@@ -35,7 +35,7 @@ class Away:
         else:
             data[context.message.author.mention] = {}
             if message:
-                data[context.message.author.mention]['MESSAGE'] = " ".join(message)
+                data[context.message.author.mention]['MESSAGE'] = " ".join(context.message.clean_content.split()[1:])
             else:
                 data[context.message.author.mention]['MESSAGE'] = True
             msg = 'You\'re now set as away.'
