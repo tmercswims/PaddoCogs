@@ -1,0 +1,6 @@
+{
+    "AUTHOR" : "Paddolicious#8880",
+    "DESCRIPTION" : "Check when the user was last active on a server.",
+    "DISABLED" : false,
+    "NAME" : "Seen"
+}
