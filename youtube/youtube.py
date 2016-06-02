@@ -8,6 +8,7 @@ import os
 
 
 class YouTube:
+	"""Le YouTube Cog"""
 	def __init__(self, bot):
 		self.bot = bot
 		self.settings = 'data/youtube/settings.json'
@@ -28,7 +29,6 @@ class YouTube:
 				enable_delete = data[server_id]['ENABLE_DELETE']
 				enable_meta = data[server_id]['ENABLE_META']
 				enable_url = data[server_id]['ENABLE_URL']
-			print(enable_meta)
 			if enable_meta:
 				url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
 				if url:
