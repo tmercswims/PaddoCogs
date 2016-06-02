@@ -28,6 +28,7 @@ class YouTube:
 				enable_delete = data[server_id]['ENABLE_DELETE']
 				enable_meta = data[server_id]['ENABLE_META']
 				enable_url = data[server_id]['ENABLE_URL']
+			print(enable_meta)
 			if enable_meta:
 				url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
 				if url:
@@ -95,6 +96,14 @@ class YouTube:
 		"""
 		Toggle metadata and preview features
 		"""
+		data = fileIO(self.settings, "load")
+		server_id = context.message.server.id
+		if server_id not in data:
+			data[server_id] = {}
+			data[server_id]['ENABLE_URL'] = False
+			data[server_id]['ENABLE_DELETE'] = False
+			data[server_id]['ENABLE_META'] = False
+			fileIO(self.settings, 'save', data)
 		if context.invoked_subcommand is None:
 			await send_cmd_help(context)
 
@@ -105,20 +114,14 @@ class YouTube:
 		"""
 		data = fileIO(self.settings, "load")
 		server_id = context.message.server.id
-		if server_id not in data:
-			data[server_id] = {}
-		if 'ENABLE_URL' not in data[server_id]:
+		if data[server_id]['ENABLE_URL'] == False:
 			data[server_id]['ENABLE_URL'] = True
 			message = 'URL now enabled'
+		elif data[server_id]['ENABLE_URL'] == True:
+			data[server_id]['ENABLE_URL'] = False
+			message = 'URL now disabled'
 		else:
-			if data[server_id]['ENABLE_URL'] == False:
-				data[server_id]['ENABLE_URL'] = True
-				message = 'URL now enabled'
-			elif data[server_id]['ENABLE_URL'] == True:
-				data[server_id]['ENABLE_URL'] = False
-				message = 'URL now disabled'
-			else:
-				pass
+			pass
 		fileIO(self.settings, 'save', data)
 		await self.bot.say(message)
 
@@ -129,20 +132,14 @@ class YouTube:
 		"""
 		data = fileIO(self.settings, "load")
 		server_id = context.message.server.id
-		if server_id not in data:
-			data[server_id] = {}
-		if 'ENABLE_META' not in data[server_id]:
+		if data[server_id]['ENABLE_META'] == False:
 			data[server_id]['ENABLE_META'] = True
-			message = 'Meta now enabled'
+			message = 'Metadata now enabled'
+		elif data[server_id]['ENABLE_META'] == True:
+			data[server_id]['ENABLE_META'] = False
+			message = 'Metadata now disabled'
 		else:
-			if data[server_id]['ENABLE_META'] == False:
-				data[server_id]['ENABLE_META'] = True
-				message = 'Metadata now enabled'
-			elif data[server_id]['ENABLE_META'] == True:
-				data[server_id]['ENABLE_META'] = False
-				message = 'Metadata now disabled'
-			else:
-				pass
+			pass
 		fileIO(self.settings, 'save', data)
 		await self.bot.say('`{}`'.format(message))
 
@@ -153,20 +150,14 @@ class YouTube:
 		"""
 		data = fileIO(self.settings, "load")
 		server_id = context.message.server.id
-		if server_id not in data:
-			data[server_id] = {}
-		if 'ENABLE_DELETE' not in data[server_id]:
+		if data[server_id]['ENABLE_DELETE'] == False:
 			data[server_id]['ENABLE_DELETE'] = True
 			message = 'Delete now enabled'
+		elif data[server_id]['ENABLE_DELETE'] == True:
+			data[server_id]['ENABLE_DELETE'] = False
+			message = 'Delete now disabled'
 		else:
-			if data[server_id]['ENABLE_DELETE'] == False:
-				data[server_id]['ENABLE_DELETE'] = True
-				message = 'Delete now enabled'
-			elif data[server_id]['ENABLE_DELETE'] == True:
-				data[server_id]['ENABLE_DELETE'] = False
-				message = 'Delete now disabled'
-			else:
-				pass
+			pass
 		fileIO(self.settings, 'save', data)
 		await self.bot.say('`{}`'.format(message))
 
