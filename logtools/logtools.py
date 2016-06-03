@@ -26,7 +26,8 @@ class LogTools:
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id
         current_channel = channel.id
-
+        if current_server not in data:
+            data[current_server] = []
         if current_channel not in data[current_server]:
             log = []
             async for message in self.bot.logs_from(channel, limit=number):
@@ -37,7 +38,7 @@ class LogTools:
                 log_msg = '[{}] {} ({}): {}'.format(timestamp, author, author_mention, content)
                 log.append(log_msg)
             try:
-                t = self.file.format(str(time()))
+                t = self.file.format(str(time()).split('.')[0])
                 with open(t, encoding='utf-8', mode="w") as f:
                     for message in log[::-1]:
                         f.write(message+'\n')
@@ -54,7 +55,8 @@ class LogTools:
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id
         current_channel = channel.id
-
+        if current_server not in data:
+            data[current_server] = []
         if current_channel not in data[current_server]:
             log = []
             async for message in self.bot.logs_from(channel, limit=number):
@@ -75,7 +77,7 @@ class LogTools:
                 print(error)
 
     @logs.command(pass_context=True, no_pm=True)
-    @checks.mod_or_permissions(manage_messages=True)
+    @checks.serverowner_or_permissions(manage_server=True)
     async def ignore(self, context, channel: discord.Channel):
         """[channel]"""
         data = fileIO(self.ignore_file, "load")

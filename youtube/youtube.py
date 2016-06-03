@@ -44,7 +44,11 @@ class YouTube:
 								except:
 									pass
 						else:
-							msg = '**Title:** _{}_\n**Uploader:** _{}_\n_YouTube url by {}_'.format(metadata['title'], metadata['author_name'], message.author.name)
+							if enable_url:
+								x = '\n_YouTube url by {}_'.format(message.author.name)
+							else:
+								x = ''
+							msg = '**Title:** _{}_\n**Uploader:** _{}_{}'.format(metadata['title'], metadata['author_name'], x)
 						await self.bot.send_message(message.channel, msg)
 
 	async def get_song_metadata(self, song_url):
