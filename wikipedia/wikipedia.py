@@ -38,7 +38,6 @@ class Wikipedia:
 				for page in result['query']['pages']:
 					title = result['query']['pages'][page]['title']
 					description = result['query']['pages'][page]['extract']
-				print(title)
 				message = '\n{}\n\n{}'.format(title, description)
 			else:
 				message = 'I\'m sorry, I can\'t find {}'.format(" ".join(query))
