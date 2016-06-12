@@ -13,8 +13,8 @@ class Wikipedia:
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command(pass_context=True, aliases=['wiki', 'w'])
-	async def wikipedia(self, context, *query: str):
+	@commands.command(pass_context=True, name='wikipedia', aliases=['wiki', 'w'])
+	async def _wikipedia(self, context, *query: str):
 		"""
 		Get information from Wikipedia
 		"""

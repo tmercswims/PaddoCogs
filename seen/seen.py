@@ -9,7 +9,7 @@ class Seen:
         self.bot = bot
         self.seen_path = 'data/seen/seen.json'
 
-    async def seen_loop(self, message):
+    async def listener(self, message):
         try:
             seen = fileIO(self.seen_path, "load")
             server_id = message.server.id
@@ -30,8 +30,8 @@ class Seen:
         except:
             pass
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['s'])
-    async def seen(self, context, username: str):
+    @commands.command(pass_context=True, no_pm=True, name='seen', aliases=['s'])
+    async def _seen(self, context, username: str):
         """seen <@username>"""
         seen = fileIO(self.seen_path, "load")
         server_id = context.message.server.id
@@ -67,8 +67,6 @@ def check_file():
 def setup(bot):
     check_folder()
     check_file()
-    check_folder()
-    check_file()
     n = Seen(bot)
-    bot.add_listener(n.seen_loop, "on_message")
+    bot.add_listener(n.listener, "on_message")
     bot.add_cog(n)

@@ -13,15 +13,15 @@ class LogTools:
         self.file = 'data/logtools/{}.log'
         self.ignore_file = 'data/logtools/logtools.json'
 
-    @commands.group(pass_context=True, no_pm=True, aliases=['log'])
-    async def logs(self, context):
+    @commands.group(pass_context=True, no_pm=True, name='logs', aliases=['log'])
+    async def _logs(self, context):
         """Retrieve logs, the slowpoke way."""
         if context.invoked_subcommand is None:
             await send_cmd_help(context)
 
-    @logs.command(pass_context=True, no_pm=True)
+    @_logs.command(pass_context=True, no_pm=True, name='get')
     @checks.mod_or_permissions(manage_messages=True)
-    async def get(self, context, channel: discord.Channel, number: int):
+    async def _get(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id
@@ -48,9 +48,9 @@ class LogTools:
             except Exception as error:
                 print(error)
 
-    @logs.command(pass_context=True, no_pm=True, aliases=['rp'])
+    @_logs.command(pass_context=True, no_pm=True, name='roleplay', aliases=['rp'])
     @checks.mod_or_permissions(manage_messages=True)
-    async def roleplay(self, context, channel: discord.Channel, number: int):
+    async def _roleplay(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id
@@ -76,9 +76,9 @@ class LogTools:
             except Exception as error:
                 print(error)
 
-    @logs.command(pass_context=True, no_pm=True)
+    @_logs.command(pass_context=True, no_pm=True, name='ignore')
     @checks.serverowner_or_permissions(manage_server=True)
-    async def ignore(self, context, channel: discord.Channel):
+    async def _ignore(self, context, channel: discord.Channel):
         """[channel]"""
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id

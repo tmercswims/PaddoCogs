@@ -24,8 +24,8 @@ class Away:
                         msg = '{} is currently away and has set a personal message: {}'.format(mention.name, data[mention.mention]['MESSAGE'])
                     await self.bot.send_message(message.channel, msg)
 
-    @commands.command(pass_context=True)
-    async def away(self, context, *message: str):
+    @commands.command(pass_context=True, name="away")
+    async def _away(self, context, *message: str):
         """Tell the bot you're away or back."""
         data = fileIO(self.away_data, 'load')
         author_mention = context.message.author.mention

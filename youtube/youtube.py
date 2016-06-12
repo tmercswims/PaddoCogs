@@ -17,7 +17,7 @@ class YouTube:
 		  '(youtube|youtu|youtube-nocookie)\.(com|be)/'
 		  '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
 
-	async def commandless(self, message):
+	async def listener(self, message):
 		if message.author.id != self.bot.user.id:
 			server_id = message.server.id
 			data = fileIO(self.settings, 'load')
@@ -74,8 +74,8 @@ class YouTube:
 			result = await r.json()
 		return result
 
-	@commands.command(pass_context=True, aliases=['yt'])
-	async def youtube(self, context, *query: str):
+	@commands.command(pass_context=True, name='youtube', aliases=['yt'])
+	async def _youtube(self, context, *query: str):
 		"""Search on Youtube"""
 		try:
 			url = 'https://www.youtube.com/results?'
@@ -94,9 +94,9 @@ class YouTube:
 			message = 'Something went terribly wrong! [{}]'.format(e)
 		await self.bot.say(message)
 
-	@commands.group(pass_context=True, aliases=['ytoggle'])
+	@commands.group(pass_context=True, name='youtubetoggle', aliases=['ytoggle'])
 	@checks.mod_or_permissions(manage_messages=True)
-	async def youtubetoggle(self, context):
+	async def _youtubetoggle(self, context):
 		"""
 		Toggle metadata and preview features
 		"""
@@ -111,8 +111,8 @@ class YouTube:
 		if context.invoked_subcommand is None:
 			await send_cmd_help(context)
 
-	@youtubetoggle.command(pass_context=True)
-	async def url(self, context):
+	@_youtubetoggle.command(pass_context=True, name='url')
+	async def _url(self, context):
 		"""
 		Toggle showing url
 		"""
@@ -129,8 +129,8 @@ class YouTube:
 		fileIO(self.settings, 'save', data)
 		await self.bot.say(message)
 
-	@youtubetoggle.command(pass_context=True)
-	async def meta(self, context):
+	@_youtubetoggle.command(pass_context=True, name='meta')
+	async def _meta(self, context):
 		"""
 		Toggle showing metadata
 		"""
@@ -147,8 +147,8 @@ class YouTube:
 		fileIO(self.settings, 'save', data)
 		await self.bot.say('`{}`'.format(message))
 
-	@youtubetoggle.command(pass_context=True)
-	async def delete(self, context):
+	@_youtubetoggle.command(pass_context=True, name='delete')
+	async def _delete(self, context):
 		"""
 		Toggle deleting message
 		"""
@@ -184,5 +184,5 @@ def setup(bot):
 	n = YouTube(bot)
 	check_folder()
 	check_file()
-	bot.add_listener(n.commandless, "on_message")
+	bot.add_listener(n.listener, "on_message")
 	bot.add_cog(n)

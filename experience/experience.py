@@ -53,21 +53,20 @@ class Experience:
             except:
                 pass
 
-    @commands.group(pass_context=True)
-    async def xp(self, context):
+    @commands.group(pass_context=True, name='xp')
+    async def _xp(self, context):
         """Keeps track of xp, counted by character"""
         if context.invoked_subcommand is None:
             await send_cmd_help(context)
 
-    @xp.command(pass_context=True)
-    async def show(self, context, *user: str):
+    @_xp.command(pass_context=True, name='show')
+    async def _show(self, context, *user: str):
         """[@username] - shows top 15 when left empty"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
         server = context.message.server.id
         experience = experience[server]
         if user:
-
             user_patch = user[0].replace('!', '')
             if user_patch in experience:
                 message = '`{0} has {1} XP.`'.format(experience[user_patch]['USERNAME'], experience[user_patch]['TOTAL_XP'])
@@ -83,9 +82,9 @@ class Experience:
             message += '```'
         await self.bot.say(message)
 
-    @xp.command(pass_context=True)
+    @_xp.command(pass_context=True, name='set')
     @checks.mod_or_permissions(manage_roles=True)
-    async def set(self, context, username: str, value: str):
+    async def _set(self, context, username: str, value: str):
         """[@username] [n]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
@@ -101,9 +100,9 @@ class Experience:
         if len(message) > 0:
             await self.bot.say(message)
 
-    @xp.command(pass_context=True)
+    @_xp.command(pass_context=True, name='ignore')
     @checks.mod_or_permissions(manage_roles=True)
-    async def ignore(self, context, username: str, value: str):
+    async def _ignore(self, context, username: str, value: str):
         """[@username] [true|false]"""
         file = 'data/experience/experience.json'
         experience = fileIO(file, "load")
@@ -122,6 +121,18 @@ class Experience:
                 message = '`Value must be either True or False.`'
         if len(message) > 0:
             await self.bot.say(message)
+
+    @_xp.command(pass_context=True, name='clear')
+    @checks.mod_or_permissions(manage_roles=True)
+    async def _clear(self, context):
+        """Clears the experience list of the current server."""
+        file = 'data/experience/experience.json'
+        experience = fileIO(file, "load")
+        server = context.message.server.id
+        if server in experience:
+            experience[server] = {}
+            fileIO(file, "save", experience)
+        await self.bot.say('`List cleared`')
 
 
 def check_folder():
