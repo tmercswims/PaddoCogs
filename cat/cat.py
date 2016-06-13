@@ -8,6 +8,7 @@ from os.path import isfile, join
 class Cat:
 	def __init__(self, bot):
 		self.bot = bot
+		self.lock = False
 
 	def voice_connected(self, server):
 		if self.bot.is_voice_connected(server):
@@ -49,13 +50,24 @@ class Cat:
 		content = message.content
 		if self.bot.user.id != author.id:
 			if self.bot.user.mention in content:
-				if self.voice_connected(server):
+				if self.voice_connected(server) and not self.lock:
 					path = 'data/downloader/paddo-cogs/cat/data/sounds'
+					#path = 'data/sounds'
 					sound = [f for f in listdir(path) if isfile(join(path, f))]
 					voice_client = self.voice_client(server)
 					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
 					player.start()
+					while player.is_playing():
+						self.lock = True
+					self.lock = False
 
+
+	async def play_song(self, server):
+		path = 'data/sounds'
+		sound = [f for f in listdir(path) if isfile(join(path, f))]
+		voice_client = self.voice_client(server)
+		player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
+		player.start()
 
 def setup(bot):
 	n = Cat(bot)
