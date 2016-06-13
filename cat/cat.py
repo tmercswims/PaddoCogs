@@ -2,6 +2,8 @@ from discord.ext import commands
 from __main__ import send_cmd_help
 from .utils import checks
 import random
+from os import listdir
+from os.path import isfile, join
 
 class Catsounds:
 	def __init__(self, bot):
