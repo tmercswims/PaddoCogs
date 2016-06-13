@@ -17,6 +17,7 @@ class Catsounds:
 
 	@commands.group(pass_context=True, no_pm=True, name='voice', aliases=['vc'])
 	async def _vc(self, context):
+		"""[join/leave]"""
 		if context.invoked_subcommand is None:
 			await send_cmd_help(context)
 
@@ -33,6 +34,7 @@ class Catsounds:
 	@_vc.command(hidden=True, pass_context=True, no_pm=True, name='leave', aliases=['disconnect'])
 	@checks.serverowner_or_permissions()
 	async def _leave(self, ctx):
+		"""Leaves your voice channel"""
 		server = ctx.message.server
 		if not self.voice_connected(server):
 			return
