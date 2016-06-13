@@ -5,7 +5,7 @@ import random
 from os import listdir
 from os.path import isfile, join
 
-class Catsounds:
+class Cat:
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -44,19 +44,20 @@ class Catsounds:
 		await voice_client.disconnect()
 
 	async def listener(self, message):
-		sound = ['meow_1.mp3', 'meow_2.mp3', 'meow_3.mp3', 'meow_4.mp3', 'meow_7.mp3', 'meow_8.mp3', 'meow_9.mp3', 'meow_10.mp3', 'meow_11.mp3', 'meow_12.mp3', 'meow_13.mp3', 'meow_14.mp3', 'meow_15.mp3', 'meow_16.mp3']
 		author = message.author
 		server = message.server
 		content = message.content
 		if self.bot.user.id != author.id:
 			if self.bot.user.mention in content:
 				if self.voice_connected(server):
+					path = 'data/downloader/paddo-cogs/cat/data/sounds'
+					sound = [f for f in listdir(path) if isfile(join(path, f))]
 					voice_client = self.voice_client(server)
-					player = voice_client.create_ffmpeg_player('data/downloader/paddo-cogs/cat/data/sounds/'+random.choice(sound))
+					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
 					player.start()
 
 
 def setup(bot):
-	n = Catsounds(bot)
+	n = Cat(bot)
 	bot.add_listener(n.listener, 'on_message')
 	bot.add_cog(n)
