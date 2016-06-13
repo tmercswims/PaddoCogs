@@ -1,7 +1,6 @@
 from discord.ext import commands
 from __main__ import send_cmd_help
 from .utils import checks
-import asyncio
 import random
 
 class Catsounds:
@@ -34,7 +33,6 @@ class Catsounds:
 	@_vc.command(hidden=True, pass_context=True, no_pm=True, name='leave', aliases=['disconnect'])
 	@checks.serverowner_or_permissions()
 	async def _leave(self, ctx):
-		author = ctx.message.author
 		server = ctx.message.server
 		if not self.voice_connected(server):
 			return
