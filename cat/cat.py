@@ -53,8 +53,8 @@ class Cat:
 		if self.bot.user.id != author.id:
 			if self.bot.user.mention in content:
 				if self.voice_connected(server) and not self.lock:
-					#path = 'data/downloader/paddo-cogs/cat/data/sounds'
-					path = 'data/sounds'
+					path = 'data/downloader/paddo-cogs/cat/data/sounds'
+					#path = 'data/sounds'
 					sound = [f for f in listdir(path) if isfile(join(path, f))]
 					voice_client = self.voice_client(server)
 					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
