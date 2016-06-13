@@ -54,14 +54,15 @@ class Cat:
 			if self.bot.user.mention in content:
 				if self.voice_connected(server) and not self.lock:
 					path = 'data/downloader/paddo-cogs/cat/data/sounds'
-					#path = 'data/sounds'
 					sound = [f for f in listdir(path) if isfile(join(path, f))]
 					voice_client = self.voice_client(server)
 					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
 					player.start()
+					await self.bot.delete_message(message)
 					while player.is_playing():
 						self.lock = True
 					self.lock = False
+
 
 
 	async def play_song(self, server):
