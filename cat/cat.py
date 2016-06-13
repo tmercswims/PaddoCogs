@@ -2,6 +2,7 @@ from discord.ext import commands
 from __main__ import send_cmd_help
 from .utils import checks
 import random
+import asyncio
 from os import listdir
 from os.path import isfile, join
 
@@ -45,14 +46,15 @@ class Cat:
 		await voice_client.disconnect()
 
 	async def listener(self, message):
+		await asyncio.sleep(0.8)
 		author = message.author
 		server = message.server
 		content = message.content
 		if self.bot.user.id != author.id:
 			if self.bot.user.mention in content:
 				if self.voice_connected(server) and not self.lock:
-					path = 'data/downloader/paddo-cogs/cat/data/sounds'
-					#path = 'data/sounds'
+					#path = 'data/downloader/paddo-cogs/cat/data/sounds'
+					path = 'data/sounds'
 					sound = [f for f in listdir(path) if isfile(join(path, f))]
 					voice_client = self.voice_client(server)
 					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
