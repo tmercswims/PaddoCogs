@@ -50,7 +50,7 @@ class Catsounds:
 			if self.bot.user.mention in content:
 				if self.voice_connected(server):
 					voice_client = self.voice_client(server)
-					player = voice_client.create_ffmpeg_player('data/sounds/'+random.choice(sound))
+					player = voice_client.create_ffmpeg_player('data/downloader/paddo-cogs/cat/data/sounds/'+random.choice(sound))
 					player.start()
 
 
