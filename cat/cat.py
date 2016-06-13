@@ -58,10 +58,10 @@ class Cat:
 					voice_client = self.voice_client(server)
 					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
 					player.start()
-					await self.bot.delete_message(message)
 					while player.is_playing():
 						self.lock = True
 					self.lock = False
+					await self.bot.delete_message(message)
 
 def setup(bot):
 	n = Cat(bot)
