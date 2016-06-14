@@ -52,7 +52,7 @@ class karma:
 
     @commands.group(pass_context=True, name='karma')
     async def _xp(self, context):
-        """Keeps track of xp, counted by character"""
+        """Keeps track of karma points, counted by character"""
         if context.invoked_subcommand is None:
             await send_cmd_help(context)
 
