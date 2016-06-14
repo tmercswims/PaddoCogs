@@ -1,12 +1,5 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Search for videos on YouTube",
-    "DISABLED" : false,
-    "NAME" : "YouTube Search"
-}
-
-{
-    "AUTHOR" : "Paddolicious#8880",
     "INSTALL_MSG" : "",
     "NAME" : "YouTube",
     "SHORT" : "Search for videos on YouTube",
