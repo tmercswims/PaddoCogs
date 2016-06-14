@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Serves drinks across all servers among mentioning a beverage listed.",
-    "DISABLED" : false,
-    "NAME" : "Bar PM"
+    "INSTALL_MSG" : "",
+    "NAME" : "BarPM",
+    "SHORT" : "Subscribe to beverages",
+    "DESCRIPTION" : "Serves drinks across all servers among mentioning a beverage listed."
 }

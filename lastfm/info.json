@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Get information from Last.fm users. Such as last played songs and top artists.",
-    "DISABLED" : false,
-    "NAME" : "Last.fm"
+    "INSTALL_MSG" : "",
+    "NAME" : "Lastfm",
+    "SHORT" : "Last.fm",
+    "DESCRIPTION" : "Get information from Last.fm users. Such as last played songs and top artists."
 }

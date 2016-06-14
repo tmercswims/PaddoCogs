@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Retrieve the logs from Discord neatly in a text file, slowly but sure. It might take awhile before a response comes back.",
-    "DISABLED" : false,
-    "NAME" : "Log Tools"
+    "INSTALL_MSG" : "",
+    "NAME" : "LogTools",
+    "SHORT" : "Retrieve logs",
+    "DESCRIPTION" : "Retrieve the logs from Discord neatly in a text file, slowly but sure. It might take awhile before a response comes back."
 }

@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Keeps track of karma points, 1 point for 1 character, url's not included.",
-    "DISABLED" : false,
-    "NAME" : "Karma tracker"
+    "INSTALL_MSG" : "",
+    "NAME" : "Karma",
+    "SHORT" : "Karma tracker",
+    "DESCRIPTION" : "Keeps track of karma points, 1 point for 1 character, url's not included."
 }

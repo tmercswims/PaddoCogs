@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Make your bot meow and purr like a true bot on mentioning the bot! Be warned, there is no qeue yet, so spamming might disconnect the bot from the voice channel.",
-    "DISABLED" : false,
-    "NAME" : "Cat"
+    "INSTALL_MSG" : "",
+    "NAME" : "Cat",
+    "SHORT" : "Make cat sounds over voice",
+    "DESCRIPTION" : "Make your bot meow and purr like a true bot on mentioning the bot! Be warned, there is no qeue yet, so spamming might disconnect the bot from the voice channel."
 }

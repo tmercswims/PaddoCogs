@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Shows the most popular games played on a server.",
-    "DISABLED" : false,
-    "NAME" : "Games"
+    "INSTALL_MSG" : "",
+    "NAME" : "Games",
+    "SHORT" : "Shows the most popular games played on a server.",
+    "DESCRIPTION" : "Shows the most popular games played on a server."
 }

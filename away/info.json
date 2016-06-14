@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Sets the user as away. When someone mentions the users the bot replies with either its own message or a message set by the user that the user is away.",
-    "DISABLED" : false,
-    "NAME" : "Away"
+    "INSTALL_MSG" : "",
+    "NAME" : "Away",
+    "SHORT" : "Sets and unsets a user away.",
+    "DESCRIPTION" : "Sets the user as away. When someone mentions the users the bot replies with either its own message or a message set by the user that the user is away."
 }

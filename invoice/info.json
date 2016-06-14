@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Checks whether someone entered a voice channel, if so, it gives that user a voice role. May come in handy when you want to do something special with voice users, such as voice users only text channel.",
-    "DISABLED" : false,
-    "NAME" : "In Voice"
+    "INSTALL_MSG" : "",
+    "NAME" : "InVoice",
+    "SHORT" : "",
+    "DESCRIPTION" : "Checks whether someone entered a voice channel, if so, it gives that user a voice role. May come in handy when you want to do something special with voice users, such as voice users only text channel."
 }

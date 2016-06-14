@@ -60,7 +60,7 @@ class BarPM:
                             if beverage in data[drinker]['SUBS']:
                                 beverage_name = self.beverages[beverage]['NAME']
                                 beverage_emoji = self.beverages[beverage]['EMOJI']
-                                message = '{} wants to give you a {}! {}'.format(author.name, beverage_name, beverage_emoji)
+                                message = '{} wants to give you {}! {}'.format(author.name, beverage_name, beverage_emoji)
                                 user = discord.utils.get(self.bot.private_channels, user__id=str(drinker))
                                 await self.bot.send_message(user, message)
 

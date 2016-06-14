@@ -1,7 +1,7 @@
 import discord
 
 
-class In_voice:
+class InVoice:
     """Gives the role 'voice' to anyone who enters a voice channel. THIS ROLE MUST EXIST AND THE BOT MUST HAVE THE RIGHTS TO CHANGE PERMISSIONS FOR IT TO WORK!"""
     def __init__(self, bot):
         self.bot = bot
@@ -23,6 +23,6 @@ class In_voice:
 
 
 def setup(bot):
-    n = In_voice(bot)
+    n = InVoice(bot)
     bot.add_listener(n.listener, 'on_voice_state_update')
     bot.add_cog(n)

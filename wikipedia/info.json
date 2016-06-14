@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "DESCRIPTION" : "Search Wikipedia",
-    "DISABLED" : false,
-    "NAME" : "Wikipedia"
+    "INSTALL_MSG" : "",
+    "NAME" : "Wikipedia",
+    "SHORT" : "Search Wikipedia",
+    "DESCRIPTION" : "Search Wikipedia"
 }
