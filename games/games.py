@@ -29,7 +29,7 @@ class Games:
                         if self.match(str(game).upper(), after_game.upper()) > 0.89 and self.match(str(game).upper(), after_game.upper()) < 1.0:
                             game_match = game
                     if game_match in data[server.id]['GAMES']:
-                        print('[{}][{}] - [{}] [{}] MATCH'.format(server.name, after.name, game_match, after_game))
+                        #print('[{}][{}] - [{}] [{}] MATCH'.format(server.name, after.name, game_match, after_game))
                         data[server.id]['GAMES'][game_match]['PLAYED'] += 1
                     elif after_game not in data[server.id]['GAMES']:
                         #print('[{}][{}] - {} MAKING'.format(server.name, after.name, after_game))
