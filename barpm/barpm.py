@@ -102,7 +102,7 @@ class BarPM:
 
     @_bar.command(pass_context=True, no_pm=True, name='unsubscribe', aliases=['unsub'])
     async def _unsubscribe(self, context, beverage):
-        """Subscribe to a beverage"""
+        """Unsubscribe to a beverage"""
         author = context.message.author
         beverage = beverage.lower()
         data = fileIO(self.drinkers, 'load')
