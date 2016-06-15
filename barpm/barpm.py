@@ -53,7 +53,7 @@ class BarPM:
                 valid = False
         if valid and not author.bot:
             for beverage in self.beverages:
-                if self.beverages[beverage]['NAME'].lower() in content.lower():
+                if self.beverages[beverage]['NAME'].lower() in content.lower().split(" "):
                     data = fileIO(self.drinkers, 'load')
                     for drinker in data:
                         if str(drinker) != str(author.id):
