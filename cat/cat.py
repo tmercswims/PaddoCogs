@@ -50,9 +50,9 @@ class Cat:
 		await asyncio.sleep(0.2)
 		author = message.author
 		server = message.server
-		content = message.content
+		mentioned = message.server.me.mentioned_in(message)
 		if self.bot.user.id != author.id:
-			if self.bot.user.nick in content or self.bot.user.mention in content:
+			if mentioned:
 				if self.voice_connected(server) and not self.audio_player:
 					await self.play_song(server)
 					self.audio_player.start()
@@ -62,10 +62,11 @@ class Cat:
 						self.audio_player.start()
 
 	async def play_song(self, server):
-		path = 'data/downloader/paddo-cogs/cat/data/sounds'
+		path = 'data/downloader/paddo-cogs/cat/data/sounds/'
+		#path = 'data/sounds/'
 		sound = [f for f in listdir(path) if isfile(join(path, f))]
 		voice_client = self.voice_client(server)
-		self.audio_player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
+		self.audio_player = voice_client.create_ffmpeg_player(path+random.choice(sound))
 
 
 def setup(bot):
