@@ -52,7 +52,7 @@ class Cat:
 		server = message.server
 		content = message.content
 		if self.bot.user.id != author.id:
-			if self.bot.user.mention in content:
+			if self.bot.user.nick in content or self.bot.user.mention in content:
 				if self.voice_connected(server) and not self.audio_player:
 					await self.play_song(server)
 					self.audio_player.start()
