@@ -74,7 +74,7 @@ class YouTube:
 			result = await r.json()
 		return result
 
-	@commands.command(pass_context=True, name='youtube', aliases=['yt'])
+	@commands.command(pass_context=True, name='youtube')
 	async def _youtube(self, context, *query: str):
 		"""Search on Youtube"""
 		try:
