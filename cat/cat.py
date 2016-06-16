@@ -9,7 +9,7 @@ from os.path import isfile, join
 class Cat:
 	def __init__(self, bot):
 		self.bot = bot
-		self.lock = False
+		self.audio_player = False
 
 	def voice_connected(self, server):
 		if self.bot.is_voice_connected(server):
@@ -43,25 +43,30 @@ class Cat:
 		if not self.voice_connected(server):
 			return
 		voice_client = self.voice_client(server)
+		self.audio_player.stop()
 		await voice_client.disconnect()
 
 	async def listener(self, message):
-		await asyncio.sleep(0.8)
+		await asyncio.sleep(0.2)
 		author = message.author
 		server = message.server
 		content = message.content
 		if self.bot.user.id != author.id:
 			if self.bot.user.mention in content:
-				if self.voice_connected(server) and not self.lock and author.voice_channel != None:
-					path = 'data/downloader/paddo-cogs/cat/data/sounds'
-					sound = [f for f in listdir(path) if isfile(join(path, f))]
-					voice_client = self.voice_client(server)
-					player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
-					player.start()
-					while player.is_playing():
-						self.lock = True
-					self.lock = False
-					await self.bot.delete_message(message)
+				if self.voice_connected(server) and not self.audio_player:
+					await self.play_song(server)
+					self.audio_player.start()
+				elif self.audio_player:
+					if not self.audio_player.is_playing():
+						await self.play_song(server)
+						self.audio_player.start()
+
+	async def play_song(self, server):
+		path = 'data/sounds'
+		sound = [f for f in listdir(path) if isfile(join(path, f))]
+		voice_client = self.voice_client(server)
+		self.audio_player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
+
 
 def setup(bot):
 	n = Cat(bot)
