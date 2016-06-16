@@ -62,7 +62,7 @@ class Cat:
 						self.audio_player.start()
 
 	async def play_song(self, server):
-		path = 'data/downloader/paddo-cogs/data/sounds'
+		path = 'data/downloader/paddo-cogs/cat/data/sounds'
 		sound = [f for f in listdir(path) if isfile(join(path, f))]
 		voice_client = self.voice_client(server)
 		self.audio_player = voice_client.create_ffmpeg_player(path+'/'+random.choice(sound))
