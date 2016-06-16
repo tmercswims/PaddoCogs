@@ -119,7 +119,7 @@ class Statistics:
     async def reload_stats(self):
         #await self.bot.wait_until_ready()
         #print('Statistics now running!')
-        await asyncio.sleep(5)
+        await asyncio.sleep(30) # just to be safe
         # gotta wait until this is fixed
         while self == self.bot.get_cog('Statistics'):
             # loop the loop around the bend
