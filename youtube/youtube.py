@@ -18,38 +18,39 @@ class YouTube:
 		  '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
 
 	async def listener(self, message):
-		if message.author.id != self.bot.user.id:
-			server_id = message.server.id
-			data = fileIO(self.settings, 'load')
-			if server_id not in data:
-				enable_delete = False
-				enable_meta = False
-				enable_url = False
-			else:
-				enable_delete = data[server_id]['ENABLE_DELETE']
-				enable_meta = data[server_id]['ENABLE_META']
-				enable_url = data[server_id]['ENABLE_URL']
-			if enable_meta:
-				url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
-				if url:
-					is_youtube_link = re.match(self.youtube_regex, url[0])
-					if is_youtube_link:
-						yt_url = "http://www.youtube.com/oembed?url={0}&format=json".format(url[0])
-						metadata = await self.get_json(yt_url)
-						if enable_url:
-							msg = '**Title:** _{}_\n**Uploader:** _{}_\n_YouTube url by {}_\n\n{}'.format(metadata['title'], metadata['author_name'], message.author.name, url[0])
-							if enable_delete:
-								try:
-									await self.bot.delete_message(message)
-								except:
-									pass
-						else:
+		if not message.channel.is_private:
+			if message.author.id != self.bot.user.id:
+				server_id = message.server.id
+				data = fileIO(self.settings, 'load')
+				if server_id not in data:
+					enable_delete = False
+					enable_meta = False
+					enable_url = False
+				else:
+					enable_delete = data[server_id]['ENABLE_DELETE']
+					enable_meta = data[server_id]['ENABLE_META']
+					enable_url = data[server_id]['ENABLE_URL']
+				if enable_meta:
+					url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
+					if url:
+						is_youtube_link = re.match(self.youtube_regex, url[0])
+						if is_youtube_link:
+							yt_url = "http://www.youtube.com/oembed?url={0}&format=json".format(url[0])
+							metadata = await self.get_json(yt_url)
 							if enable_url:
-								x = '\n_YouTube url by {}_'.format(message.author.name)
+								msg = '**Title:** _{}_\n**Uploader:** _{}_\n_YouTube url by {}_\n\n{}'.format(metadata['title'], metadata['author_name'], message.author.name, url[0])
+								if enable_delete:
+									try:
+										await self.bot.delete_message(message)
+									except:
+										pass
 							else:
-								x = ''
-							msg = '**Title:** _{}_\n**Uploader:** _{}_{}'.format(metadata['title'], metadata['author_name'], x)
-						await self.bot.send_message(message.channel, msg)
+								if enable_url:
+									x = '\n_YouTube url by {}_'.format(message.author.name)
+								else:
+									x = ''
+								msg = '**Title:** _{}_\n**Uploader:** _{}_{}'.format(metadata['title'], metadata['author_name'], x)
+							await self.bot.send_message(message.channel, msg)
 
 	async def get_song_metadata(self, song_url):
 		"""
@@ -74,7 +75,7 @@ class YouTube:
 			result = await r.json()
 		return result
 
-	@commands.command(pass_context=True, name='youtube')
+	@commands.command(pass_context=True, name='youtube', no_pm=True)
 	async def _youtube(self, context, *query: str):
 		"""Search on Youtube"""
 		try:
