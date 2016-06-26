@@ -12,7 +12,7 @@ class Wolfram:
 
 	@commands.command(pass_context=True, name='wolfram', aliases=['ask'])
 	async def _wolfram(self, context, *arguments : str):
-		""""
+		"""
             Ask Wolfram Alpha any question
         """
 		api_key = self.settings['WOLFRAM_API_KEY']
