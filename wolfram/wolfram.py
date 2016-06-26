@@ -10,7 +10,7 @@ class Wolfram:
 		self.bot = bot
 		self.settings =  fileIO('data/wolfram/settings.json', 'load')
 
-	@commands.command(pass_context=True, aliases=['ask'])
+	@commands.command(pass_context=True, name='wolfram', aliases=['ask'])
 	async def _wolfram(self, context, *arguments : str):
 		""""
             Ask Wolfram Alpha any question
