@@ -36,6 +36,14 @@ class Stocks:
                 day_high = res['day_high']
                 change = res['change']
                 change_percentage = res['chg_percent']
+                if change < 0:
+                    change = '▼ {}'.format(change)
+                else:
+                    change = '▲ {}'.format(change)
+                if change_percentage < 0:
+                    change = '▼ {}'.format(change_percentage)
+                else:
+                    change = '▲ {}'.format(change_percentage)
                 message+= '**{}** ({})\n**POINTS**: *{}* `{} ({}%)`\n**HIGH/LOW**: *{} - {}*\n\n'.format(name, symbol, price, change, change_percentage, day_low, day_high)
         else:
             message = 'Could not find symbol'
