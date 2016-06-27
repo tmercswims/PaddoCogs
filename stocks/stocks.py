@@ -36,11 +36,11 @@ class Stocks:
                 day_high = res['day_high']
                 change = res['change']
                 change_percentage = res['chg_percent']
-                if int(change) < 0:
+                if float(change) < 0:
                     change = '▼ {}'.format(str(change))
                 else:
                     change = '▲ {}'.format(str(change))
-                if int(change_percentage) < 0:
+                if float(change_percentage) < 0:
                     change = '▼ {}'.format(str(change_percentage))
                 else:
                     change = '▲ {}'.format(str(change_percentage))
