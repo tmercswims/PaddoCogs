@@ -44,7 +44,7 @@ class Stocks:
                     change = '▼{}'.format(str(change_percentage))
                 else:
                     change = '▲{}'.format(str(change_percentage))
-                message+= '**{}** ({})\n**POINTS**: *{}* `{} ({}%)`\n**HIGH/LOW**: *{} - {}*\n\n'.format(name, symbol, price, change, change_percentage, day_low, day_high)
+                message+= '**{}** ({})\n**POINTS**: {} `{} ({}%)`\n**HIGH/LOW**: {} - {}\n\n'.format(name, symbol, price, change, change_percentage, day_low, day_high)
         else:
             message = 'Could not find symbol'
         await self.bot.say(message)
