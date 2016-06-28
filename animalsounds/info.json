@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "Paddolicious#8880",
-    "NAME" : "Cat",
-    "SHORT" : "Make cat sounds over voice",
-    "DESCRIPTION" : "Make your bot meow and purr like a true bot on mentioning the bot! Be warned, there is no qeue yet, so spamming might disconnect the bot from the voice channel."
+    "NAME" : "Animalsounds",
+    "SHORT" : "Make various animal sounds",
+    "DESCRIPTION" : "Make various animal sounds"
 }
