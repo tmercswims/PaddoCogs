@@ -20,7 +20,7 @@ class LogTools:
             await send_cmd_help(context)
 
     @_logs.command(pass_context=True, no_pm=True, name='get')
-    @checks.mod_or_permissions(manage_messages=True)
+    @checks.mod_or_permissions(manage_channels=True)
     async def _get(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
         data = fileIO(self.ignore_file, "load")
@@ -49,7 +49,7 @@ class LogTools:
                 print(error)
 
     @_logs.command(pass_context=True, no_pm=True, name='roleplay', aliases=['rp'])
-    @checks.mod_or_permissions(manage_messages=True)
+    @checks.mod_or_permissions(manage_channels=True)
     async def _roleplay(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
         data = fileIO(self.ignore_file, "load")
@@ -77,7 +77,7 @@ class LogTools:
                 print(error)
 
     @_logs.command(pass_context=True, no_pm=True, name='ignore')
-    @checks.serverowner_or_permissions(manage_server=True)
+    @checks.mod_or_permissions(administrator=True)
     async def _ignore(self, context, channel: discord.Channel):
         """[channel]"""
         data = fileIO(self.ignore_file, "load")

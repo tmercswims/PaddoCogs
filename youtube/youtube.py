@@ -96,7 +96,7 @@ class YouTube:
 		await self.bot.say(message)
 
 	@commands.group(pass_context=True, name='youtubetoggle', aliases=['ytoggle'])
-	@checks.mod_or_permissions(manage_messages=True)
+	@checks.mod_or_permissions(administrator=True)
 	async def _youtubetoggle(self, context):
 		"""
 		Toggle metadata and preview features
