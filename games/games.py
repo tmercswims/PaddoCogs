@@ -39,7 +39,8 @@ class Games:
                     else:
                         #print('[{}][{}] - {} ADDING'.format(server.name, after.name, after_game))
                         data[server.id]['GAMES'][after_game]['PLAYED'] += 1
-                    fileIO(self.data_file, 'save', data)
+                    if game_match != '':
+                        fileIO(self.data_file, 'save', data)
 
     @commands.command(pass_context=True, no_pm=True, name='games')
     async def _games(self, context):
