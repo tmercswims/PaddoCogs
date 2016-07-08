@@ -18,7 +18,7 @@ class Games:
         after_game = str(after.game)
         server = after.server
         if not after.bot:
-            if after_game != 'None':
+            if after_game != 'None' and after_game != '':
                 if before_game != after_game:
                     data = fileIO(self.data_file, 'load')
                     if server.id not in data:
