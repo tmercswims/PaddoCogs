@@ -1,10 +1,5 @@
-from .utils.dataIO import fileIO
 from discord.ext import commands
 import aiohttp
-import html
-import os
-import re
-
 
 class Wikipedia:
 	"""
