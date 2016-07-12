@@ -57,7 +57,7 @@ class Steam:
                 info['recommendations'] = 'Recommendations: {}\n\n'.format(str(data['recommendations']['total']))
             info['about_the_game'] = re.sub("<.*?>", " ", data['about_the_game'].replace('  ','').replace('\r', '').replace('<br>', '\n').replace('\t', ''))
             if len(info['about_the_game']) > 400:
-                info['about_the_game'] = '{}...'.format(info['about_the_game'][:600-3])
+                info['about_the_game'] = '{}...'.format(info['about_the_game'][:400-3])
             return info
         return False
 
