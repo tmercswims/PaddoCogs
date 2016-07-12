@@ -50,7 +50,7 @@ class LogTools:
                 except Exception as error:
                     print(error)
             except discord.errors.Forbidden:
-                await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
+                await self.bot.say('Nope can\'t do, I don\'t have permission you savage!')
 
     @_logs.command(pass_context=True, no_pm=True, name='all')
     @checks.mod_or_permissions(manage_channels=True)
