@@ -56,8 +56,8 @@ class Steam:
             if 'recommendations' in data:
                 info['recommendations'] = 'Recommendations: {}\n\n'.format(str(data['recommendations']['total']))
             info['about_the_game'] = re.sub("<.*?>", " ", data['about_the_game'].replace('  ','').replace('\r', '').replace('<br>', '\n').replace('\t', ''))
-            if len(info['about_the_game']) > 400:
-                info['about_the_game'] = '{}...'.format(info['about_the_game'][:400-3])
+            if len(info['about_the_game']) > 500:
+                info['about_the_game'] = '{}...'.format(info['about_the_game'][:500-3])
             return info
         return False
 
@@ -89,6 +89,8 @@ class Steam:
                 if app_type == 'game':
                     match = app
             elif game.lower() in name.lower():
+                if len(games) > 10:
+                    break
                 games.append(app)
             if game.lower() == name.lower():
                 match = app
@@ -115,7 +117,6 @@ class Steam:
             message+='```'
         else:
             message = '`This game could not be found`'
-        print(message)
         await self.bot.say(message)
 
     @commands.command(pass_context=True, no_pm=True, name='steamupdate', aliases=['stupdate'])
