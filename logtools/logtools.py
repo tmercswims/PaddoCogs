@@ -31,14 +31,16 @@ class LogTools:
             data[current_server] = []
         if current_channel not in data[current_server]:
             log = []
-            async for message in self.bot.logs_from(channel, limit=number):
-
-                author = message.author
-                if username.id == author.id:
-                    content = message.clean_content
-                    timestamp = str(message.timestamp)[:-7]
-                    log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
-                    log.append(log_msg)
+            try:
+                async for message in self.bot.logs_from(channel, limit=number):
+                    author = message.author
+                    if username.id == author.id:
+                        content = message.clean_content
+                        timestamp = str(message.timestamp)[:-7]
+                        log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
+                        log.append(log_msg)
+            except discord.errors.Forbidden:
+                await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
             try:
                 t = self.file.format(str(time()).split('.')[0])
                 with open(t, encoding='utf-8', mode="w") as f:
@@ -61,12 +63,15 @@ class LogTools:
             data[current_server] = []
         if current_channel not in data[current_server]:
             log = []
-            async for message in self.bot.logs_from(channel, limit=number):
-                author = message.author
-                content = message.clean_content
-                timestamp = str(message.timestamp)[:-7]
-                log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
-                log.append(log_msg)
+            try:
+                async for message in self.bot.logs_from(channel, limit=number):
+                    author = message.author
+                    content = message.clean_content
+                    timestamp = str(message.timestamp)[:-7]
+                    log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
+                    log.append(log_msg)
+            except discord.errors.Forbidden:
+                await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
             try:
                 t = self.file.format(str(time()).split('.')[0])
                 with open(t, encoding='utf-8', mode="w") as f:
@@ -89,12 +94,15 @@ class LogTools:
             data[current_server] = []
         if current_channel not in data[current_server]:
             log = []
-            async for message in self.bot.logs_from(channel, limit=number):
-                author = message.author
-                content = message.clean_content
-                timestamp = str(message.timestamp)[:-7]
-                log_msg = '[{}] {}: {}'.format(timestamp, author.name, content)
-                log.append(log_msg)
+            try:
+                async for message in self.bot.logs_from(channel, limit=number):
+                    author = message.author
+                    content = message.clean_content
+                    timestamp = str(message.timestamp)[:-7]
+                    log_msg = '[{}] {}: {}'.format(timestamp, author.name, content)
+                    log.append(log_msg)
+            except discord.errors.Forbidden:
+                await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
             try:
                 t = self.file.format(str(time()))
                 with open(t, encoding='utf-8', mode="w") as f:
@@ -113,7 +121,6 @@ class LogTools:
         data = fileIO(self.ignore_file, "load")
         current_server = context.message.server.id
         current_channel = channel.id
-
         if current_server not in data:
             data[current_server] = []
         if current_channel not in data[current_server]:
