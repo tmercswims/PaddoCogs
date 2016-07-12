@@ -39,18 +39,18 @@ class LogTools:
                         timestamp = str(message.timestamp)[:-7]
                         log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
                         log.append(log_msg)
+                try:
+                    t = self.file.format(str(time()).split('.')[0])
+                    with open(t, encoding='utf-8', mode="w") as f:
+                        for message in log[::-1]:
+                            f.write(message+'\n')
+                    f.close()
+                    await self.bot.send_file(context.message.channel, t)
+                    os.remove(t)
+                except Exception as error:
+                    print(error)
             except discord.errors.Forbidden:
                 await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
-            try:
-                t = self.file.format(str(time()).split('.')[0])
-                with open(t, encoding='utf-8', mode="w") as f:
-                    for message in log[::-1]:
-                        f.write(message+'\n')
-                f.close()
-                await self.bot.send_file(context.message.channel, t)
-                os.remove(t)
-            except Exception as error:
-                print(error)
 
     @_logs.command(pass_context=True, no_pm=True, name='all')
     @checks.mod_or_permissions(manage_channels=True)
@@ -70,18 +70,18 @@ class LogTools:
                     timestamp = str(message.timestamp)[:-7]
                     log_msg = '[{}] {} ({}): {}'.format(timestamp, author.name, author.id, content)
                     log.append(log_msg)
+                try:
+                    t = self.file.format(str(time()).split('.')[0])
+                    with open(t, encoding='utf-8', mode="w") as f:
+                        for message in log[::-1]:
+                            f.write(message+'\n')
+                    f.close()
+                    await self.bot.send_file(context.message.channel, t)
+                    os.remove(t)
+                except Exception as error:
+                    print(error)
             except discord.errors.Forbidden:
                 await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
-            try:
-                t = self.file.format(str(time()).split('.')[0])
-                with open(t, encoding='utf-8', mode="w") as f:
-                    for message in log[::-1]:
-                        f.write(message+'\n')
-                f.close()
-                await self.bot.send_file(context.message.channel, t)
-                os.remove(t)
-            except Exception as error:
-                print(error)
 
     @_logs.command(pass_context=True, no_pm=True, name='roleplay', aliases=['rp'])
     @checks.mod_or_permissions(manage_channels=True)
@@ -101,18 +101,19 @@ class LogTools:
                     timestamp = str(message.timestamp)[:-7]
                     log_msg = '[{}] {}: {}'.format(timestamp, author.name, content)
                     log.append(log_msg)
+
+                try:
+                    t = self.file.format(str(time()))
+                    with open(t, encoding='utf-8', mode="w") as f:
+                        for message in log[::-1]:
+                            f.write(message+'\n')
+                    f.close()
+                    await self.bot.send_file(context.message.channel, t)
+                    os.remove(t)
+                except Exception as error:
+                    print(error)
             except discord.errors.Forbidden:
                 await self.bot.say('Nope can\'t do, I don\'t have permession you savage!')
-            try:
-                t = self.file.format(str(time()))
-                with open(t, encoding='utf-8', mode="w") as f:
-                    for message in log[::-1]:
-                        f.write(message+'\n')
-                f.close()
-                await self.bot.send_file(context.message.channel, t)
-                os.remove(t)
-            except Exception as error:
-                print(error)
 
     @_logs.command(pass_context=True, no_pm=True, name='ignore')
     @checks.mod_or_permissions(administrator=True)
