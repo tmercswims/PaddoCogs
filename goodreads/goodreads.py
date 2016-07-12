@@ -56,7 +56,7 @@ class Goodreads:
             else:
                 book_description = 'No description available'
             if len(book_description) > 600:
-                book_description = book_description[0:500-3] + '...\n\nRead more at: ' + book_url
+                book_description = book_description[0:500-3] + '...'
             authors = ''
             if len(book['authors']['author']) == 9:
                 authors += '{} ({})'.format(book['authors']['author']['name'], book['authors']['author']['average_rating'])
@@ -64,7 +64,7 @@ class Goodreads:
                 for author in book['authors']['author']:
                     authors+= '{} ({}), '.format(author['name'], author['average_rating'])
                 authors = authors[:-2]
-            backtrack = '```{}\n\nPublished: {}\nAuthors: {}\nRating: {}\n\n{}```'.format(book_title, book_published, authors, book_rating, book_description)
+            backtrack = '```{}\n\nPublished: {}\nAuthors: {}\nRating: {}\n\n{}\n\nRead more at: {}```'.format(book_title, book_published, authors, book_rating, book_description, book_url)
             return backtrack
         else:
             return '**I couldn\'t find that!**'
