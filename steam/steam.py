@@ -101,7 +101,6 @@ class Steam:
         game_match = await self._game_search(game)
         match = game_match[0]
         games = game_match[1]
-
         if match:
             info = await self._app_info(match['appid'])
             if info:
@@ -116,6 +115,7 @@ class Steam:
             message+='```'
         else:
             message = '`This game could not be found`'
+        print(message)
         await self.bot.say(message)
 
     @commands.command(pass_context=True, no_pm=True, name='steamupdate', aliases=['stupdate'])
