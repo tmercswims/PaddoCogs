@@ -98,7 +98,7 @@ class Animalsounds:
 		animal = 'owl'
 		await self.sound_play(context, animal)
 
-	@commands.command(no_pm=True, pass_context=True, name='sing', aliases=['whale'])
+	@commands.command(no_pm=True, pass_context=True, name='whalesong')
 	async def _whale(self, context):
 		animal = 'whale'
 		await self.sound_play(context, animal)
