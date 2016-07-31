@@ -43,14 +43,17 @@ class CustomRoles:
         if name.lower() in roles:
             for role in server.roles:
                 if role.name.lower() == name.lower():
-                    try:
-                        await self.bot.delete_role(server, role)
-                        message = 'Role {} removed'.format(role.name)
-                        break
-                    except discord.Forbidden:
-                        message = 'I have no permissions to do that. Please give me role managing permissions.'
+                    if role.permissions.value < 1:
+                        try:
+                            await self.bot.delete_role(server, role)
+                            message = 'Role {} removed'.format(role.name)
+                            break
+                        except discord.Forbidden:
+                            message = 'I have no permissions to do that. Please give me role managing permissions.'
+                    else:
+                        message = 'Not a CustomRoles role'
                 else:
-                    message = '`Something went wrong...`'
+                    message = '`No such role on this server`'
         else:
             message = 'There is no such role on this server'
         await self.bot.say(message)
