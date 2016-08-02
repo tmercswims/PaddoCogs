@@ -31,11 +31,17 @@ class InVoice:
         """Set a role"""
         data = fileIO('data/invoice/settings.json', 'load')
         server = context.message.server
-        if server.id not in data:
-            data[server.id] = {}
-        data[server.id]['ROLE'] = role
-        fileIO('data/invoice/settings.json', 'save', data)
-        await self.bot.say('Role {} set for Invoice'.format(role))
+        roles = [r.name.lower() for r in server.roles]
+        if role.lower() in roles:
+            if server.id not in data:
+                data[server.id] = {}
+            data[server.id]['ROLE'] = role
+            fileIO('data/invoice/settings.json', 'save', data)
+            message = 'Role `{}` set for Invoice.'.format(role)
+        else:
+            message = 'Role `{}` does not exist on this server.'.format(role)
+        await self.bot.say(message)
+
 
 def check_folder():
     if not os.path.exists("data/invoice"):
