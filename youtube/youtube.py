@@ -6,7 +6,6 @@ import aiohttp
 import re
 import os
 
-
 class YouTube:
 	"""Le YouTube Cog"""
 	def __init__(self, bot):
@@ -80,7 +79,7 @@ class YouTube:
 		"""Search on Youtube"""
 		try:
 			url = 'https://www.youtube.com/results?'
-			payload = {'search_query': " ".join(query)}
+			payload = {'search_query': " ".join(query), 'hl' : 'en'}
 			headers = {'user-agent': 'Red-cog/1.0'}
 			conn = aiohttp.TCPConnector(verify_ssl=False)
 			session = aiohttp.ClientSession(connector=conn)
@@ -166,12 +165,10 @@ class YouTube:
 		fileIO(self.settings, 'save', data)
 		await self.bot.say('`{}`'.format(message))
 
-
 def check_folder():
 	if not os.path.exists("data/youtube"):
 		print("Creating data/youtube folder...")
 		os.makedirs("data/youtube")
-
 
 def check_file():
 	data = {}
@@ -179,7 +176,6 @@ def check_file():
 	if not fileIO(f, "check"):
 		print("Creating default settings.json...")
 		fileIO(f, "save", data)
-
 
 def setup(bot):
 	n = YouTube(bot)
