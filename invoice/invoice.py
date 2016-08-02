@@ -35,6 +35,7 @@ class InVoice:
             data[server.id] = {}
         data[server.id]['ROLE'] = role
         fileIO('data/invoice/settings.json', 'save', data)
+        await self.bot.say('Role {} set for Invoice'.format(role))
 
 def check_folder():
     if not os.path.exists("data/invoice"):
