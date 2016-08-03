@@ -51,7 +51,7 @@ class Trollcog:
         await self.bot.say(message)
 
     @commands.command(pass_context=True, no_pm=True, name='troggletimer')
-    @checks.serverowner_or_permissions(administrator=True)
+    @checks.is_owner() 
     async def _troggletimer(self, context, seconds: int):
         """Sets the timer for how often trolls happen. Default: 960 (16 minutes)"""
         data = dataIO.load_json(self.data_file)
