@@ -16,8 +16,7 @@ class Kill:
         ways_to_kill['3'] = 'Screaming in sheer terror and agony, {0} is horrifically dragged into the darkness by unseen forces, leaving nothing but bloody fingernails and a trail of scratch marks in the ground from which the young person had attempted to halt the dragging process.'.format(victim)
         ways_to_kill['4'] = '{0} takes a machette and starts hacking away on {1}, chopping {1} into dozens of pieces.'.format(killer, victim)
         ways_to_kill['5'] = '{0} pours acid over {1}. *"Well don\'t you look pretty right now?"*'.format(killer, victim)
-        compile_kills = [ways_to_kill[i] for i in ways_to_kill]
-        await self.bot.say('**{0}**'.format(random.choice(compile_kills)))
+        await self.bot.say('**{0}**'.format(random.choice([ways_to_kill[i] for i in ways_to_kill])))
 
 def setup(bot):
     n = Kill(bot)
