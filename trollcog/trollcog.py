@@ -51,7 +51,7 @@ class Trollcog:
         await self.bot.say(message)
 
     @commands.command(pass_context=True, no_pm=True, name='troggletimer')
-    @checks.is_owner() 
+    @checks.is_owner()
     async def _troggletimer(self, context, seconds: int):
         """Sets the timer for how often trolls happen. Default: 960 (16 minutes)"""
         data = dataIO.load_json(self.data_file)
@@ -79,7 +79,7 @@ class Trollcog:
             channel = random.choice([channel for channel in self.bot.get_all_channels() if (channel.type is discord.ChannelType.text)])
             member = random.choice([member for member in channel.server.members if (member.status is discord.Status.online or member.status is discord.Status.offline and not member.bot)])
             if member.id not in self.cooldown:
-                if member.id not in data or data[member.id]:
+                if member.id not in data or not data[member.id]:
                     if channel.permissions_for([member for member in channel.server.members if (self.bot.user.name in member.name)][0]).send_messages:
                         if channel.permissions_for(member).read_messages:
                             message = await self.bot.send_message(channel, '{} :upside_down:'.format(member.mention))
