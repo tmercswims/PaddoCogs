@@ -18,7 +18,7 @@ class CustomRoles:
     @checks.mod_or_permissions(manage_roles=True)
     async def add(self, context, color, *role_name):
         """Add a role
-        Example: role add ff0000 This is a red role"""
+        Example: role add ff0000 Red Role"""
         server = context.message.server
         if re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', color):
             name = ' '.join(role_name)
@@ -51,7 +51,7 @@ class CustomRoles:
                         except discord.Forbidden:
                             message = 'I have no permissions to do that. Please give me role managing permissions.'
                     else:
-                        message = 'Not a CustomRoles role'
+                        message = 'Not a Custom Roles role'
                 else:
                     message = '`No such role on this server`'
         else:
