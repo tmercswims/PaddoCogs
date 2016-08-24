@@ -1,3 +1,4 @@
+import discord
 class Maolmao:
 	def __init__(self, bot):
 		self.bot = bot
@@ -7,7 +8,10 @@ class Maolmao:
 		channel = message.channel
 		if message.author.id != self.bot.user.id:
 			if message.content.lower().startswith('ayy') or message.content.lower().startswith('aayy'):
-				await self.bot.send_file(channel, self.base)
+				try:
+					await self.bot.send_file(channel, self.base)
+				except discord.Forbidden:
+					await self.bot.send_message(message.channel, 'lmao')
 
 def setup(bot):
     n = Maolmao(bot)
