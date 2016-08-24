@@ -4,9 +4,10 @@ class Maolmao:
 		self.base = 'data/downloader/paddo-cogs/maolmao/data/maolmao.png'
 
 	async def listener(self, message):
+		channel = message.channel
 		if message.author.id != self.bot.user.id:
 			if message.content.lower().startswith('ayy') or message.content.lower().startswith('aayy'):
-				await self.bot.send_file(context.message.channel, self.base)
+				await self.bot.send_file(channel, self.base)
 
 def setup(bot):
     n = Maolmao(bot)
