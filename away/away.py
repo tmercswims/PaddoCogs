@@ -34,7 +34,7 @@ class Away:
             msg = 'You\'re now back.'
         else:
             data[context.message.author.mention] = {}
-            if message:
+            if len(str(message)) < 256:
                 data[context.message.author.mention]['MESSAGE'] = " ".join(context.message.clean_content.split()[1:])
             else:
                 data[context.message.author.mention]['MESSAGE'] = True
