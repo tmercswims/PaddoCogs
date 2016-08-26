@@ -26,7 +26,7 @@ class Weather:
                     parse = await r.json()
                 session.close()
                 if parse['status'] == 'OK':
-                    return datetime.datetime.fromtimestamp(int(parse['timestamp'])).strftime('%Y-%m-%d %H:%M:%S')
+                    return datetime.datetime.fromtimestamp(int(parse['timestamp'])-7200).strftime('%Y-%m-%d %H:%M:%S')
         return
 
     @commands.command(pass_context=True, name='weather', aliases=['we'])
