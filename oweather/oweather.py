@@ -55,7 +55,7 @@ class Weather:
                 humidity = str(parse['main']['humidity']) + '%'
                 pressure = str(parse['main']['pressure']) + ' hPa'
                 wind_kmh = str(round(parse['wind']['speed'] * 3.6)) + ' km/h'
-                wind_mph = str(round(parse['wind']['speed'] * 2.23694)) + ' mp/h'
+                wind_mph = str(round(parse['wind']['speed'] * 2.23694)) + ' mph'
                 clouds = parse['weather'][0]['description'].title()
                 name = parse['name'] + ', ' + parse['sys']['country']
                 message = 'Weather in {0}\nLocal time: {7}\n{1}, {2}\nWind: {3} / {4}\nPressure: {5}\nHumidity: {6}'.format(name, clouds, temperature, wind_kmh, wind_mph, pressure, humidity, local_time)
