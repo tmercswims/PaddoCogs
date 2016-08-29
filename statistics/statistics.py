@@ -19,7 +19,6 @@ class Statistics:
         self.refresh_rate = self.settings['REFRESH_RATE']
 
     async def _int(self, n):
-        # check if n is an integer
         try:
             int(n)
             return True
@@ -72,7 +71,6 @@ class Statistics:
         await self.bot.say(message)
 
     async def retrieve_statistics(self):
-        # work needs to be done here
         name = self.bot.user.name
         uptime = abs(self.bot.uptime - int(time.perf_counter()))
         up = datetime.timedelta(seconds=uptime)
@@ -81,7 +79,7 @@ class Statistics:
         minutes = int(up.seconds%3600/60)
         avg_sent = round(self.sent_messages / uptime, 3)
         avg_recv = round(self.received_messages / uptime, 3)
-        users = str(len([m for m in self.bot.get_all_members()]))
+        users = str(len(set(bot.get_all_members())))
         servers = str(len(self.bot.servers))
         text_channels = 0
         voice_channels = 0
@@ -107,7 +105,6 @@ class Statistics:
         return message
 
     async def incoming_messages(self, message):
-        # collecing messages
         if message.author.id == self.bot.user.id:
             self.sent_messages += 1
         else:
@@ -117,12 +114,8 @@ class Statistics:
         fileIO('data/statistics/settings.json', 'save', self.settings)
 
     async def reload_stats(self):
-        #await self.bot.wait_until_ready()
-        #print('Statistics now running!')
-        await asyncio.sleep(30) # just to be safe
-        # gotta wait until this is fixed
+        await asyncio.sleep(30)
         while self == self.bot.get_cog('Statistics'):
-            # loop the loop around the bend
             if self.settings['CHANNEL_ID']:
                 msg = await self.retrieve_statistics()
                 channel = discord.utils.get(self.bot.get_all_channels(), id=self.settings['CHANNEL_ID'])
