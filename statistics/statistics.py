@@ -79,7 +79,7 @@ class Statistics:
         minutes = int(up.seconds%3600/60)
         avg_sent = round(self.sent_messages / uptime, 3)
         avg_recv = round(self.received_messages / uptime, 3)
-        users = str(len(set(bot.get_all_members())))
+        users = str(len(set(self.bot.get_all_members())))
         servers = str(len(self.bot.servers))
         text_channels = 0
         voice_channels = 0
