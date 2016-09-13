@@ -13,11 +13,14 @@ class Games:
 
     async def listener(self, before, after):
         before_game = str(before.game)
-        after_game = str(after.game)
+        try:
+            after_game = str(after.game)
+        except TypeError:
+            after_game = 'None'
         server = after.server
 
         if not after.bot:
-            if after_game != "None" and after_game != '':
+            if after_game != 'None' and after_game != '':
                 if before_game != after_game:
                     data = fileIO(self.data_file, 'load')
                     if server.id not in data:
@@ -28,15 +31,12 @@ class Games:
                         if self.match(str(game).upper(), after_game.upper()) > 0.89 and self.match(str(game).upper(), after_game.upper()) < 1.0:
                             game_match = game
                     if game_match in data[server.id]['GAMES']:
-                        #print('[{}][{}] - [{}] [{}] MATCH'.format(server.name, after.name, game_match, after_game))
                         data[server.id]['GAMES'][game_match]['PLAYED'] += 1
                     elif after_game not in data[server.id]['GAMES']:
-                        #print('[{}][{}] - {} MAKING'.format(server.name, after.name, after_game))
                         data[server.id]['GAMES'][after_game] = {}
                         data[server.id]['GAMES'][after_game]['PLAYED'] = 1
                         data[server.id]['GAMES'][after_game]['GAME'] = after_game
                     else:
-                        #print('[{}][{}] - {} ADDING'.format(server.name, after.name, after_game))
                         data[server.id]['GAMES'][after_game]['PLAYED'] += 1
                     fileIO(self.data_file, 'save', data)
 
