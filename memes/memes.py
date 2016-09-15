@@ -19,7 +19,7 @@ class Memes:
 
 	@commands.command(pass_context=True)
 	async def lenny(self, context):
-	   await self.bot.say('( ͡° ͜ʖ °)')
+	   await self.bot.say('( ͡° ͜ʖ ͡°)')
 
 	@commands.command(pass_context=True, aliases=[])
 	async def yuno(self, context):
