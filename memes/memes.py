@@ -17,6 +17,10 @@ class Memes:
 	async def megarage(self, context):
 	   await self.bot.send_file(context.message.channel, '{}mrage.png'.format(self.base))
 
+	@commands.command(pass_context=True)
+	async def lenny(self, context):
+	   await self.bot.say('( ͡° ͜ʖ °)')
+
 	@commands.command(pass_context=True, aliases=[])
 	async def yuno(self, context):
 	   await self.bot.send_file(context.message.channel, '{}yuno.png'.format(self.base))
