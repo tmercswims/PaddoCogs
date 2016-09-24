@@ -77,8 +77,6 @@ class Statistics:
         days = up.days
         hours = int(up.seconds/3600)
         minutes = int(up.seconds%3600/60)
-        avg_sent = round(self.sent_messages / uptime, 3)
-        avg_recv = round(self.received_messages / uptime, 3)
         users = str(len(set(self.bot.get_all_members())))
         servers = str(len(self.bot.servers))
         text_channels = 0
@@ -97,7 +95,7 @@ class Statistics:
         message+= '\n'
         message+= 'In **{}** channels (**{}** text, **{}** voice)'.format(str(channels), str(text_channels), str(voice_channels))
         message+= '\n'
-        message+= '**{}** messages received (**{}** per second) and **{}** messages sent (**{}** per second)'.format(str(self.received_messages), str(avg_recv), str(self.sent_messages), str(avg_sent))
+        message+= '**{}** messages received and **{}** messages sent'.format(str(self.received_messages), str(self.sent_messages))
         message+= '\n'
         message+= '**{}** active cogs with **{}** commands'.format(str(len(self.bot.cogs)), str(len(self.bot.commands)))
         message+= '\n'
