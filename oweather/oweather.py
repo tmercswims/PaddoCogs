@@ -43,9 +43,9 @@ class Weather:
             async with session.get(url, params=payload, headers=headers) as r:
                 parse = await r.json()
             session.close()
-            #lat = parse['coord']['lat']
-            #lng = parse['coord']['lon']
-            #local_time = await self._get_local_time(lat, lng)
+            lat = parse['coord']['lat']
+            lng = parse['coord']['lon']
+            local_time = await self._get_local_time(lat, lng)
             celcius = round(int(parse['main']['temp'])-273)+1
             fahrenheit = round(int(parse['main']['temp'])*9/5-459)+2
             temperature = '{0} Celsius / {1} Fahrenheit'.format(celcius, fahrenheit)
@@ -55,7 +55,7 @@ class Weather:
             wind_mph = str(round(parse['wind']['speed'] * 2.23694)) + ' mp/h'
             clouds = parse['weather'][0]['description'].title()
             name = parse['name'] + ', ' + parse['sys']['country']
-            message = 'Weather in {0}\n{1}, {2}\nWind: {3} / {4}\nPressure: {5}\nHumidity: {6}'.format(name, clouds, temperature, wind_kmh, wind_mph, pressure, humidity)
+            message = 'Weather in {0}\nLocal time: {7}\n{1}, {2}\nWind: {3} / {4}\nPressure: {5}\nHumidity: {6}'.format(name, clouds, temperature, wind_kmh, wind_mph, pressure, humidity, local_time)
         else:
             message = 'No API key set. Get one at http://openweathermap.org/'
         await self.bot.say('```{0}```'.format(message))
