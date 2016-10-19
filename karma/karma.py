@@ -111,6 +111,7 @@ class karma:
 		server = context.message.server
 		if server.id in self.data:
 			self.data[server.id] = {}
+			fileIO(self.data_file, 'save', self.data)
 			await self.bot.say('`List cleared`')
 
 	async def _store_data(self):
