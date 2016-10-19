@@ -13,22 +13,25 @@ class Seen:
 
 	async def listener(self, message):
 		if not message.channel.is_private and self.bot.user.id != message.author.id:
-			server = message.server
-			author = message.author
-			channel = message.channel
-			content = message.content
-			timestamp = message.timestamp
-			if server.id not in self.data:
-				self.data[server.id] = {}
-			if author.id not in self.data[server.id]:
-				self.data[server.id][author.id] = {}
-			if author.nick:
-				self.data[server.id][author.id]['NAME'] = '{} ({})'.format(author.name, author.nick)
-			else:
-				self.data[server.id][author.id]['NAME'] = author.name
-			self.data[server.id][author.id]['TIMESTAMP'] = str(timestamp)[:-7]
-			self.data[server.id][author.id]['MESSAGE'] = content
-			self.data[server.id][author.id]['CHANNEL'] = channel.mention
+		server = message.server
+		channel = message.channel
+		author = message.author
+		timestamp = message.timestamp
+		filename = 'data/seen/{}/{}.json'.format(server.id, author.id)
+		if not os.path.exists('data/seen/{}'.format(server.id)):
+			os.makedirs('data/seen/{}'.format(server.id))
+		if not fileIO(filename, 'check'):
+			data = {}
+			data['TIMESTAMP'] = str(timestamp)[:-7]
+			data['MESSAGE'] = message.content
+			data['CHANNEL'] = channel.mention
+			fileIO(filename, 'save', data)
+		else:
+			data = fileIO(file_name, 'load')
+			data['TIMESTAMP'] = str(timestamp)[:-7]
+			data['MESSAGE'] = message.content
+			data['CHANNEL'] = channel.mention
+			fileIO(filename, 'save', data)
 
 	@commands.command(pass_context=True, no_pm=True, name='seen', aliases=['s'])
 	async def _seen(self, context, username: discord.Member):
@@ -37,20 +40,10 @@ class Seen:
 		author = username
 		if server.id in self.data:
 			if author.id in self.data[server.id]:
-				timestamp = self.data[server.id][author.id]['TIMESTAMP']
-				last_msg = self.data[server.id][author.id]['MESSAGE']
-				user_name = self.data[server.id][author.id]['NAME']
-				channel_name = self.data[server.id][author.id]['CHANNEL']
-				message = '{} was last seen on `{} UTC` in {}, saying: {}'.format(user_name, timestamp, channel_name, last_msg)
-			elif author.mention in self.data[server.id]:
-				# legacy
-				timestamp = self.data[server.id][author.mention]['TIMESTAMP']
-				last_msg = self.data[server.id][author.mention]['MESSAGE']
-				user_name = self.data[server.id][author.mention]['NAME']
-				channel_name = self.data[server.id][author.mention]['CHANNEL']
-				message = '{} was last seen on `{} UTC` in {}, saying: {}'.format(user_name, timestamp, channel_name, last_msg)
+				timestamp = self.data[server.id][author.id]
+				message = '{} was last seen on `{} UTC`'.format(author.display_name, timestamp)
 			else:
-				message = 'I have not seen {} yet.'.format(author.name)
+				message = 'I have not seen {} yet.'.format(author.display_name)
 		else:
 			message = 'I haven\'t seen anyone in this server yet!'
 		await self.bot.say('{}'.format(message))
