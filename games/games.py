@@ -2,6 +2,7 @@ import os
 from discord.ext import commands
 from .utils.dataIO import fileIO
 from difflib import SequenceMatcher
+import asyncio
 
 class Games:
 	def __init__(self, bot):
