@@ -115,7 +115,7 @@ class karma:
 
 	async def _store_data(self):
 		await self.bot.wait_until_ready()
-		while True:
+		while self == self.bot.get_cog('Karma'):
 			fileIO(self.data_file, 'save', self.data)
 			await asyncio.sleep(60)
 
