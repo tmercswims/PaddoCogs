@@ -32,7 +32,6 @@ class Games:
 					data[game[0]] +=1
 				else:
 					data[after.game.name] = 1
-
 			fileIO(filename, "save", data)
 
 	@commands.command(pass_context=True, no_pm=True, name='games')
@@ -43,8 +42,6 @@ class Games:
 		filename = 'data/games/{}.json'.format(server.id)
 		if fileIO(filename, "check"):
 			data = fileIO(filename, "load")
-
-
 			games_played = sorted(data, key=lambda x: data[x], reverse=True)
 			message = '```Most popular games played on {}\n\n'.format(server.name)
 			for i, game in enumerate(games_played, 1):
