@@ -32,7 +32,7 @@ class Games:
 							game_match = game
 					if game_match in self.data[server.id]['GAMES']:
 						self.data[server.id]['GAMES'][game_match]['PLAYED'] += 1
-					elif after_game not in data[server.id]['GAMES']:
+					elif after_game not in self.data[server.id]['GAMES']:
 						self.data[server.id]['GAMES'][after_game] = {}
 						self.data[server.id]['GAMES'][after_game]['PLAYED'] = 1
 						self.data[server.id]['GAMES'][after_game]['GAME'] = after_game
