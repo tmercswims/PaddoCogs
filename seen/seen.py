@@ -57,7 +57,7 @@ class Seen:
 
 	async def _store_data(self):
 		await self.bot.wait_until_ready()
-		while self == self.bot.get_cog('Seen'):
+		while self is self.bot.get_cog('Seen'):
 			fileIO(self.seen_path, 'save', self.data)
 			await asyncio.sleep(60)
 
