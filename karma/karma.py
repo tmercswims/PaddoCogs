@@ -13,7 +13,6 @@ class karma:
 		self.bot = bot
 		self.data_file = 'data/karma/karma.json'
 		self.settings = fileIO("data/red/settings.json", "load")
-		self.data = fileIO(self.data_file, "load")
 
 	def is_int(self, n):
 		try:
@@ -23,30 +22,30 @@ class karma:
 			return False
 
 	async def add_karma(self, message):
-			try:
+			author = message.author
+			if not author.bot:
 				prefixes = self.settings['PREFIXES']
-				content = re.sub(r"http\S+", "", message.content)
 				server = message.server
-				author = message.author
+				content = re.sub(r"http\S+", "", message.content)
+				filename = 'data/karma/{}.json'.format(server.id)
+				if not fileIO(filename, "check"):
+					data = {}
+					fileIO(filename, "save", data)
+				else:
+					data = fileIO(filename, "load")
 				valid = True
 				for prefix in prefixes:
 					if content.startswith(prefix):
 						valid = False
-				if valid and not author.bot:
-					if server.id not in self.data:
-						self.data[server.id] = {}
-					if author.id not in self.data[server.id]:
-						self.data[server.id][author.id] = {}
-						self.data[server.id][author.id]['IGNORE'] = False
-						self.data[server.id][author.id]['KARMA'] = 0
-					if not self.data[server.id][author.id]['IGNORE']:
-						if author.nick is not None:
-							self.data[server.id][author.id]['USERNAME'] = author.nick
-						else:
-							self.data[server.id][author.id]['USERNAME'] = author.name
-						self.data[server.id][author.id]['KARMA'] += int(len(content))
-			except:
-				pass
+				if valid:
+					if author.id not in data:
+						data[author.id] = {}
+						data[author.id]['IGNORE'] = False
+						data[author.id]['KARMA'] = 0
+						data[author.id]['USERNAME'] = author.display_name
+					data[author.id]['KARMA'] += int(len(content))
+				fileIO(filename, "save", data)
+
 
 	@commands.group(pass_context=True, name='karma')
 	async def _xp(self, context):
@@ -58,7 +57,9 @@ class karma:
 	async def _show(self, context, *username: discord.Member):
 		"""[@username] - shows top 15 when left empty"""
 		server = context.message.server
-		data = self.data[server.id]
+		filename = 'data/karma/{}.json'.format(server.id)
+		if fileIO(filename, "check"):
+			data = fileIO(filename, "load")
 		if username:
 			username = username[0]
 			if username.id in data:
@@ -80,45 +81,48 @@ class karma:
 	async def _set(self, context, username: discord.Member, value: str):
 		"""[@username] [n]"""
 		server = context.message.server
-		if username.id in self.data[server.id]:
-			if self.is_int(value):
-				self.data[server.id][username.id]['KARMA'] = int(value)
-				fileIO(self.data_file, "save", self.data)
-				message = '`XP set`'
-			else:
-				message = '`Value must be an integer.`'
-			await self.bot.say(message)
+		filename = 'data/karma/{}.json'.format(server.id)
+		if fileIO(filename, "check"):
+			data = fileIO(filename, "load")
+			if username.id in data:
+				if self.is_int(value):
+					data[username.id]['KARMA'] = int(value)
+					fileIO(filename, "save", data)
+					message = '`XP set`'
+				else:
+					message = '`Value must be an integer.`'
+				await self.bot.say(message)
 
 	@_xp.command(pass_context=True, name='ignore')
 	async def _ignore(self, context):
 		"""Do this if you don't want to receive any karma."""
 		server = context.message.server
 		author = context.message.author
-		if author.id in self.data[server.id]:
-			value = self.data[server.id][author.id]['IGNORE']
-			if not value:
-				self.data[server.id][author.id]['IGNORE'] = True
-				message = '`Ignoring you`'
-			else:
-				self.data[server.id][author.id]['IGNORE'] = False
-				message = '`Tracking you`'
-			await self.bot.say(message)
+		filename = 'data/karma/{}.json'.format(server.id)
+		if fileIO(filename, "check"):
+			data = fileIO(filename, "load")
+			if author.id in data:
+				value = data[author.id]['IGNORE']
+				if not value:
+					data[author.id]['IGNORE'] = True
+					message = '`Ignoring you`'
+				else:
+					data[author.id]['IGNORE'] = False
+					message = '`Tracking you`'
+				fileIO(filename, "save", data)
+				await self.bot.say(message)
 
 	@_xp.command(pass_context=True, name='clear')
 	@checks.mod_or_permissions(manage_roles=True)
 	async def _clear(self, context):
 		"""Clears the karma list of the current server."""
 		server = context.message.server
-		if server.id in self.data:
-			self.data[server.id] = {}
-			fileIO(self.data_file, 'save', self.data)
+		filename = 'data/karma/{}.json'.format(server.id)
+		if fileIO(filename, "check"):
+			data = fileIO(filename, "load")
+			data = {}
+			fileIO(filename, 'save', data)
 			await self.bot.say('`List cleared`')
-
-	async def _store_data(self):
-		await self.bot.wait_until_ready()
-		while self is self.bot.get_cog('Karma'):
-			fileIO(self.data_file, 'save', self.data)
-			await asyncio.sleep(60)
 
 def check_folder():
 	if not os.path.exists("data/karma"):
@@ -137,5 +141,4 @@ def setup(bot):
 	check_file()
 	n = karma(bot)
 	bot.add_listener(n.add_karma, "on_message")
-	bot.loop.create_task(n._store_data())
 	bot.add_cog(n)
