@@ -27,7 +27,6 @@ class Games:
 			match = self.match(before_game, after.game.name)
 			if match < 0.89 and len(after.game.name) > 2:
 				game = [game for game in data if self.match(game.upper(), after.game.name.upper()) > 0.89]
-				print(before_game, after.game.name, game, server.id)
 				if game:
 					data[game[0]] +=1
 				else:
