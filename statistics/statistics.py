@@ -7,6 +7,11 @@ import discord
 import time
 import os
 
+try:
+	import psutil
+except:
+	raise ModuleNotFound("psutil is not installed. Do 'pip3 install psutil --upgrade' to use this cog.")
+
 class Statistics:
 	"""
 	Statistics
@@ -81,6 +86,12 @@ class Statistics:
 		servers = str(len(self.bot.servers))
 		text_channels = 0
 		voice_channels = 0
+
+		cpu_p = psutil.cpu_percent(interval=None, percpu=True)
+		cpu_usage = sum(cpu_p)/len(cpu_p)
+
+		mem_v = psutil.virtual_memory()
+
 		for channel in self.bot.get_all_channels():
 			if channel.type == discord.ChannelType.text:
 				text_channels += 1
@@ -100,6 +111,10 @@ class Statistics:
 		message+= '**{}** active cogs with **{}** commands'.format(str(len(self.bot.cogs)), str(len(self.bot.commands)))
 		message+= '\n'
 		message+= 'API version **{}**'.format(discord.__version__)
+		message+= '\n\n'
+		message+= 'CPU Usage: **{0:.1f}**%'.format(cpu_usage)
+		message+= '\n'
+		message+= 'Memory Usage: **{0:.1f}**%'.format(mem_v.percent)
 		return message
 
 	async def incoming_messages(self, message):
