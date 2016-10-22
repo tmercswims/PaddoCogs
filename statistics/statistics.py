@@ -10,7 +10,7 @@ import os
 try:
 	import psutil
 except:
-	raise ModuleNotFound("psutil is not installed. Do 'pip3 install psutil --upgrade' to use this cog.")
+	psutil = False
 
 class Statistics:
 	"""
@@ -165,6 +165,8 @@ def check_file():
 		fileIO(f, "save", data)
 
 def setup(bot):
+	if psutil is False:
+		raise RuntimeError("psutil is not installed. Do 'pip3 install psutil --upgrade' to use this cog.")
 	check_folder()
 	check_file()
 	n = Statistics(bot)
