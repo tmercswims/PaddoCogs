@@ -126,6 +126,7 @@ class Statistics:
             self.received_messages += 1
         self.settings['SENT_MESSAGES'] = self.sent_messages
         self.settings['RECEIVED_MESSAGES'] = self.received_messages
+        dataIO.save_json('data/statistics/settings.json', self.settings)
 
     async def reload_stats(self):
         await asyncio.sleep(30)
