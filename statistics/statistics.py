@@ -10,8 +10,12 @@ import os
 try:
     import psutil
 except:
+<<<<<<< HEAD
     psutil = False
 
+=======
+	psutil = False
+>>>>>>> origin/master
 
 class Statistics:
     """
@@ -163,6 +167,7 @@ def check_file():
 
 
 def setup(bot):
+<<<<<<< HEAD
     if psutil is False:
         raise RuntimeError("psutil is not installed. Do 'pip3 install psutil --upgrade' to use this cog.")
     else:
@@ -173,3 +178,14 @@ def setup(bot):
         bot.add_listener(n.incoming_messages, "on_message")
         bot.loop.create_task(n._store_data())
         bot.loop.create_task(n.reload_stats())
+=======
+	if psutil is False:
+		raise RuntimeError("psutil is not installed. Do 'pip3 install psutil --upgrade' to use this cog.")
+	check_folder()
+	check_file()
+	n = Statistics(bot)
+	bot.add_cog(n)
+	bot.add_listener(n.incoming_messages, "on_message")
+	bot.loop.create_task(n._store_data())
+	bot.loop.create_task(n.reload_stats())
+>>>>>>> origin/master
