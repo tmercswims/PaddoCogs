@@ -5,7 +5,7 @@ from __main__ import settings
 class Maolmao:
     def __init__(self, bot):
         self.bot = bot
-        self.image = 'data/what.png'
+        self.image = 'data/maolmao/data/maolmao.png'
         self.owner = '<!{}>'.format(settings.owner)
 
     async def listener(self, message):
