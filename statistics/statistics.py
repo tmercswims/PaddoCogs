@@ -9,7 +9,6 @@ import os
 
 try:
     import psutil
-    psutil = True
 except:
     psutil = False
 
