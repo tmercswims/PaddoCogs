@@ -4,7 +4,7 @@ from discord.ext import commands
 class Memes:
     def __init__(self, bot):
         self.bot = bot
-        self.base = 'data/downloader/paddo-cogs/memes/data/images/'
+        self.base = 'data/memes/images/'
 
     @commands.command(pass_context=True)
     async def kappa(self, context):
