@@ -172,5 +172,4 @@ def setup(bot):
         n = Statistics(bot)
         bot.add_cog(n)
         bot.add_listener(n.incoming_messages, "on_message")
-        bot.loop.create_task(n._store_data())
         bot.loop.create_task(n.reload_stats())
