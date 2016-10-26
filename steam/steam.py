@@ -1,14 +1,15 @@
-from .utils.dataIO import fileIO
-import aiohttp
-import os
+from cogs.utils.dataIO import dataIO
 from discord.ext import commands
+import aiohttp
 import difflib
+import os
 import re
+
 
 class Steam:
     def __init__(self, bot):
         self.bot = bot
-        self.games = fileIO('data/steam/games.json', 'load')['applist']['apps']['app']
+        self.games = dataIO.load_json('data/steam/games.json')['applist']['apps']['app']
 
     async def _update_apps(self):
         payload = {}
@@ -20,7 +21,7 @@ class Steam:
             data = await r.json()
         session.close()
         self.games = data['applist']['apps']['app']
-        fileIO('data/steam/games.json', 'save', data)
+        dataIO.save_json('data/steam/games.json', data)
 
     async def _app_info(self, gid):
         url = 'http://store.steampowered.com/api/appdetails?'
@@ -55,7 +56,7 @@ class Steam:
             info['recommendations'] = ''
             if 'recommendations' in data:
                 info['recommendations'] = 'Recommendations: {}\n\n'.format(str(data['recommendations']['total']))
-            info['about_the_game'] = re.sub("<.*?>", " ", data['about_the_game'].replace('  ','').replace('\r', '').replace('<br>', '\n').replace('\t', ''))
+            info['about_the_game'] = re.sub("<.*?>", " ", data['about_the_game'].replace('  ', '').replace('\r', '').replace('<br>', '\n').replace('\t', ''))
             if len(info['about_the_game']) > 500:
                 info['about_the_game'] = '{}...'.format(info['about_the_game'][:500-3])
             return info
@@ -83,7 +84,7 @@ class Steam:
         for app in self.games:
             name = app['name']
             appid = app['appid']
-            x = difflib.SequenceMatcher(None,name.lower(),game.lower()).ratio()
+            x = difflib.SequenceMatcher(None, name.lower(), game.lower()).ratio()
             if x > 0.92:
                 app_type = await self._app_type(appid)
                 if app_type == 'game':
@@ -113,8 +114,8 @@ class Steam:
         elif games:
             message = '```This game was not found. But I found close matches:\n\n'
             for game in games:
-                message+= '{}\n'.format(game['name'])
-            message+='```'
+                message += '{}\n'.format(game['name'])
+            message += '```'
         else:
             message = '`This game could not be found`'
         await self.bot.say(message)
@@ -129,10 +130,12 @@ class Steam:
             print(error)
         await self.bot.say(message)
 
+
 def check_folder():
     if not os.path.exists('data/steam'):
         print('Creating data/steam folder...')
         os.makedirs('data/steam')
+
 
 def check_file():
     data = {}
@@ -140,9 +143,10 @@ def check_file():
     data['applist']['apps'] = {}
     data['applist']['apps']['app'] = []
     f = 'data/steam/games.json'
-    if not fileIO(f, 'check'):
+    if not dataIO.is_valid_json(f):
         print('Creating default games.json...')
-        fileIO(f, 'save', data)
+        dataIO.save_json(f, data)
+
 
 def setup(bot):
     check_folder()

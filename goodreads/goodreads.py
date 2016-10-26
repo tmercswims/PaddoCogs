@@ -3,8 +3,8 @@ import re
 import aiohttp
 from .utils import checks
 from discord.ext import commands
-from .utils.dataIO import fileIO
 from __main__ import send_cmd_help
+from cogs.utils.dataIO import dataIO
 
 try:
     import xmltodict
@@ -12,13 +12,14 @@ try:
 except:
     xmltodict_lib = False
 
+
 class Goodreads:
     def __init__(self, bot):
         self.bot = bot
         self.settings_file = 'data/goodreads/settings.json'
         self.gateway = 'https://www.goodreads.com/book/{}.xml?'
         self.payload = {}
-        self.key = fileIO(self.settings_file, "load")['API_KEY']
+        self.key = dataIO.load_json(self.settings_file)['API_KEY']
 
     async def _get_query(self, payload, gateway):
         headers = {'user-agent': 'Red-cog/1.0'}
@@ -43,16 +44,16 @@ class Goodreads:
             book = parse['GoodreadsResponse']['book']
             book_url = book['url']
             book_title = book['title']
-            if book_title == None:
+            if book_title is None:
                 book_title = 'No title'
             book_rating = book['average_rating']
-            if book_rating == None:
+            if book_rating is None:
                 book_rating = 'No ratings'
             book_published = book['work']['original_publication_year']['#text']
-            if book_published == None:
+            if book_published is None:
                 book_published = 'No information'
-            if book['description'] != None:
-                book_description =  re.sub('<.*?>', '', book['description'].replace('<br>', '\n'))
+            if book['description'] is not None:
+                book_description = re.sub('<.*?>', '', book['description'].replace('<br>', '\n'))
             else:
                 book_description = 'No description available'
             if len(book_description) > 600:
@@ -62,7 +63,7 @@ class Goodreads:
                 authors += '{} ({})'.format(book['authors']['author']['name'], book['authors']['author']['average_rating'])
             else:
                 for author in book['authors']['author']:
-                    authors+= '{} ({}), '.format(author['name'], author['average_rating'])
+                    authors += '{} ({}), '.format(author['name'], author['average_rating'])
                 authors = authors[:-2]
             backtrack = '```{}\n\nPublished: {}\nAuthors: {}\nRating: {}\n\n{}\n\nRead more at: {}```'.format(book_title, book_published, authors, book_rating, book_description, book_url)
             return backtrack
@@ -70,7 +71,7 @@ class Goodreads:
             return '**I couldn\'t find that!**'
 
     @commands.command(pass_context=True, name='goodreads', aliases=['gr'])
-    async def _goodreads(self, context, *, search : str):
+    async def _goodreads(self, context, *, search: str):
         if search:
             if self.key:
                 message = await self._query_search(search)
@@ -84,25 +85,28 @@ class Goodreads:
     @checks.is_owner()
     async def _api(self, context, key: str):
         """Set an API key for this cog. Get one at: """
-        data = fileIO(self.settings_file, "load")
+        data = dataIO.load_json(self.settings_file)
         data['API_KEY'] = key
         self.key = key
         message = 'API Key set'
-        fileIO(self.settings_file, "save", data)
+        dataIO.save_json(self.settings_file, data)
         await self.bot.say('*{}*'.format(message))
+
 
 def check_folder():
     if not os.path.exists("data/goodreads"):
         print("Creating data/goodreads folder...")
         os.makedirs("data/goodreads")
 
+
 def check_file():
     data = {}
     data['API_KEY'] = ''
     f = "data/goodreads/settings.json"
-    if not fileIO(f, "check"):
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, data)
         print("Creating default settings.json...")
-        fileIO(f, "save", data)
+
 
 def setup(bot):
     if xmltodict_lib:

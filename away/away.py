@@ -1,6 +1,5 @@
-# import discord
 from discord.ext import commands
-from .utils.dataIO import fileIO
+from cogs.utils.dataIO import dataIO
 import os
 
 
@@ -15,10 +14,10 @@ class Away:
         for mention in message.mentions:
             tmp[mention] = True
         if message.author.id != self.bot.user.id:
-            data = fileIO(self.away_data, 'load')
+            data = dataIO.load_json(self.away_data)
             for mention in tmp:
                 if mention.mention in data:
-                    if data[mention.mention]['MESSAGE'] is True:
+                    if data[mention.mention]['MESSAGE']:
                         msg = '{} is currently away.'.format(mention.name)
                     else:
                         msg = '{} is currently away and has set a personal message: {}'.format(mention.name, data[mention.mention]['MESSAGE'])
@@ -27,7 +26,7 @@ class Away:
     @commands.command(pass_context=True, name="away")
     async def _away(self, context, *message: str):
         """Tell the bot you're away or back."""
-        data = fileIO(self.away_data, 'load')
+        data = dataIO.load_json(self.away_data)
         author_mention = context.message.author.mention
         if author_mention in data:
             del data[author_mention]
@@ -39,7 +38,7 @@ class Away:
             else:
                 data[context.message.author.mention]['MESSAGE'] = True
             msg = 'You\'re now set as away.'
-        fileIO(self.away_data, 'save', data)
+        dataIO.save_json(self.away_data, data)
         await self.bot.say(msg)
 
 
@@ -52,9 +51,9 @@ def check_folder():
 def check_file():
     away = {}
     f = 'data/away/away.json'
-    if not fileIO(f, 'check'):
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, away)
         print('Creating default away.json...')
-        fileIO(f, 'save', away)
 
 
 def setup(bot):

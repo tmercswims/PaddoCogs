@@ -1,10 +1,10 @@
-from discord.ext import commands
-from .utils.dataIO import fileIO
-import aiohttp
 import os
-from .utils import checks
-from __main__ import send_cmd_help
+import aiohttp
 import datetime
+from .utils import checks
+from discord.ext import commands
+from __main__ import send_cmd_help
+from cogs.utils.dataIO import dataIO
 
 
 class Lastfm:
@@ -12,7 +12,7 @@ class Lastfm:
     def __init__(self, bot):
         self.bot = bot
         self.settings_file = 'data/lastfm/lastfm.json'
-        settings = fileIO(self.settings_file, 'load')
+        settings = dataIO.load_json(self.settings_file)
         self.api_key = settings['LASTFM_API_KEY']
 
         self.payload = {}
@@ -48,10 +48,10 @@ Will remember your username after setting one. [p]lastfm last @username will bec
             if 'error' in data:
                 message = '{}'.format(data['message'])
             else:
-                settings = fileIO(self.settings_file, "load")
+                settings = dataIO.load_json(self.settings_file)
                 settings['USERS'][context.message.author.id] = username[0]
                 username = username[0]
-                fileIO(self.settings_file, "save", settings)
+                dataIO.save_json(self.settings_file, settings)
                 message = 'Username set'
         else:
             message = 'Now come on, I need your username!'
@@ -62,12 +62,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Retrieve general information"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
                 user_patch = username[0].replace('!', '')
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if user_patch[2:-1] in settings['USERS']:
                     username = settings['USERS'][user_patch[2:-1]]
                 else:
@@ -103,12 +103,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Shows the last 10 played songs"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
                 user_patch = username[0].replace('!', '')
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if user_patch[2:-1] in settings['USERS']:
                     username = settings['USERS'][user_patch[2:-1]]
                 else:
@@ -152,12 +152,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 most played songs"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
                 user_patch = username[0].replace('!', '')
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if user_patch[2:-1] in settings['USERS']:
                     username = settings['USERS'][user_patch[2:-1]]
                 else:
@@ -194,12 +194,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 played artists"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
                 user_patch = username[0].replace('!', '')
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if user_patch[2:-1] in settings['USERS']:
                     username = settings['USERS'][user_patch[2:-1]]
                 else:
@@ -236,12 +236,12 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         """Top 10 played albums"""
         if self.api_key != '':
             if not username:
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if context.message.author.id in settings['USERS']:
                     username = settings['USERS'][context.message.author.id]
             else:
                 user_patch = username[0].replace('!', '')
-                settings = fileIO(self.settings_file, 'load')
+                settings = dataIO.load_json(self.settings_file)
                 if user_patch[2:-1] in settings['USERS']:
                     username = settings['USERS'][user_patch[2:-1]]
                 else:
@@ -277,10 +277,10 @@ Will remember your username after setting one. [p]lastfm last @username will bec
     @checks.is_owner()
     async def _apikey(self, context, *key: str):
         """Sets the Last.fm API key - for bot owner only."""
-        settings = fileIO(self.settings_file, "load")
+        settings = dataIO.load_json(self.settings_file)
         if key:
             settings['LASTFM_API_KEY'] = key[0]
-            fileIO(self.settings_file, "save", settings)
+            dataIO.save_json(self.settings_file, settings)
             await self.bot.say('```Done```')
 
 
@@ -295,9 +295,9 @@ def check_file():
     data['LASTFM_API_KEY'] = ''
     data['USERS'] = {}
     f = "data/lastfm/lastfm.json"
-    if not fileIO(f, "check"):
+    if not dataIO.is_valid_json(f):
         print("Creating default lastfm.json...")
-        fileIO(f, "save", data)
+        dataIO.save_json(f)
 
 
 def setup(bot):

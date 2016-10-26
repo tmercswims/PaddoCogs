@@ -3,6 +3,7 @@ from cogs.utils.dataIO import dataIO
 from .utils import checks
 import os
 
+
 class Geordiespeak:
     def __init__(self, bot):
         self.bot = bot
@@ -28,8 +29,8 @@ class Geordiespeak:
         english = english.split(' ')
         for word in english:
             before = ''
-            after =''
-            c = ['.',',','!','?',';','*','```','(',')','[',']']
+            after = ''
+            c = ['.', ',', '!', '?', ';', '*', '```', '(', ')', '[', ']']
             if word:
                 if word[0] in c:
                     before = word[0]
@@ -42,7 +43,7 @@ class Geordiespeak:
                 word = before+word+after
                 if word.istitle():
                     word = word.title()
-                geordie+=word+' '
+                geordie += word + ' '
         return geordie
 
     async def listener(self, message):
@@ -53,14 +54,17 @@ class Geordiespeak:
             if author.id == self.bot.user.id:
                 await self.bot.edit_message(message, await self._translator(content))
 
+
 def check_folder():
     if not os.path.exists('data/geordiespeak'):
         os.makedirs('data/geordiespeak')
+
 
 def check_file():
     f = 'data/geordiespeak/settings.json'
     if dataIO.is_valid_json(f) is False:
         dataIO.save_json(f, {})
+
 
 def setup(bot):
     check_folder()

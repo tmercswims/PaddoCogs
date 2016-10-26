@@ -1,7 +1,7 @@
 import discord
 from .utils import checks
 from discord.ext import commands
-from .utils.dataIO import fileIO
+from cogs.utils.dataIO import dataIO
 from __main__ import send_cmd_help
 from time import time
 import os
@@ -19,12 +19,11 @@ class LogTools:
         if context.invoked_subcommand is None:
             await send_cmd_help(context)
 
-
     @_logs.command(pass_context=True, no_pm=True, name='username')
     @checks.mod_or_permissions(manage_channels=True)
     async def _username(self, context, username: discord.Member, channel: discord.Channel, number: int):
         """[mention] [channel] [number]"""
-        data = fileIO(self.ignore_file, "load")
+        data = dataIO.load_json(self.ignore_file)
         current_server = context.message.server.id
         current_channel = channel.id
         if current_server not in data:
@@ -56,7 +55,7 @@ class LogTools:
     @checks.mod_or_permissions(manage_channels=True)
     async def _get(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
-        data = fileIO(self.ignore_file, "load")
+        data = dataIO.load_json(self.ignore_file)
         current_server = context.message.server.id
         current_channel = channel.id
         if current_server not in data:
@@ -87,7 +86,7 @@ class LogTools:
     @checks.mod_or_permissions(manage_channels=True)
     async def _roleplay(self, context, channel: discord.Channel, number: int):
         """[channel] [number]"""
-        data = fileIO(self.ignore_file, "load")
+        data = dataIO.load_json(self.ignore_file)
         current_server = context.message.server.id
         current_channel = channel.id
         if current_server not in data:
@@ -119,7 +118,7 @@ class LogTools:
     @checks.mod_or_permissions(administrator=True)
     async def _ignore(self, context, channel: discord.Channel):
         """[channel]"""
-        data = fileIO(self.ignore_file, "load")
+        data = dataIO.load_json(self.ignore_file)
         current_server = context.message.server.id
         current_channel = channel.id
         if current_server not in data:
@@ -131,20 +130,23 @@ class LogTools:
             data[current_server].remove(current_channel)
             message = 'Unignoring {}'.format(channel.mention)
 
-        fileIO(self.ignore_file, "save", data)
+        dataIO.save_json(self.ignore_file, data)
         await self.bot.say('*{}*'.format(message))
+
 
 def check_folder():
     if not os.path.exists("data/logtools"):
         print("Creating data/logtools folder...")
         os.makedirs("data/logtools")
 
+
 def check_file():
     data = {}
     f = "data/logtools/logtools.json"
-    if not fileIO(f, "check"):
+    if not dataIO.is_valid_json(f):
         print("Creating default logtools.json...")
-        fileIO(f, "save", data)
+        dataIO.save_json(f, data)
+
 
 def setup(bot):
     check_folder()

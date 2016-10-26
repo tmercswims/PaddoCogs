@@ -4,6 +4,7 @@ from .utils import checks
 from discord.ext import commands
 from __main__ import send_cmd_help
 
+
 class CustomRoles:
     def __init__(self, bot):
         self.bot = bot
@@ -112,9 +113,10 @@ class CustomRoles:
         message = '```\nAvailable roles:\n'
         for role in server.roles:
             if role.permissions.value < 1:
-                message+= '\n{}'.format(role.name)
-        message+= '```'
+                message += '\n{}'.format(role.name)
+        message += '```'
         await self.bot.say(message)
+
 
 def setup(bot):
     n = CustomRoles(bot)

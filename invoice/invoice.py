@@ -48,12 +48,14 @@ def check_folder():
         print("Creating data/invoice folder...")
         os.makedirs("data/invoice")
 
+
 def check_file():
     data = {}
     f = "data/invoice/settings.json"
     if not fileIO(f, "check"):
         print("Creating default settings.json...")
         fileIO(f, "save", data)
+
 
 def setup(bot):
     check_folder()

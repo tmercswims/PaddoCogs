@@ -2,12 +2,13 @@ from discord.ext import commands
 import random
 import discord
 
+
 class Kill:
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def kill(self, context, member : discord.Member):
+    async def kill(self, context, member: discord.Member):
         """Have you always wanted to kill someone? If so, do it in a creative way!"""
         killer = context.message.author.mention
         victim = member.mention
@@ -24,6 +25,7 @@ class Kill:
         ways_to_kill['11'] = '{0} is killed instantly as the top half of his head is blown off by a Red Army sniper armed with a Mosin Nagant, {0}\'s brains splattering everywhere in a horrific fashion.'.format(victim)
 
         await self.bot.say('**{0}**'.format(random.choice([ways_to_kill[i] for i in ways_to_kill])))
+
 
 def setup(bot):
     n = Kill(bot)

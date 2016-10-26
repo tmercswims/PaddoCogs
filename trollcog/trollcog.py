@@ -10,6 +10,7 @@ from cogs.utils.dataIO import dataIO
 cog_name = 'trollcog'
 data_name = 'optout'
 
+
 class Trollcog:
     def __init__(self, bot):
         self.bot = bot
@@ -88,10 +89,12 @@ class Trollcog:
                             await asyncio.sleep(self.timer)
             await asyncio.sleep(5)
 
+
 def check_folder():
     if not os.path.exists('data/{}'.format(cog_name)):
         print('Creating data/{}'.format(cog_name))
         os.makedirs('data/{}'.format(cog_name))
+
 
 def check_file():
     data = {}
@@ -100,6 +103,7 @@ def check_file():
     f = 'data/{}/{}.json'.format(cog_name, data_name)
     if dataIO.is_valid_json(f) is False:
         dataIO.save_json(f, data)
+
 
 def setup(bot):
     check_folder()

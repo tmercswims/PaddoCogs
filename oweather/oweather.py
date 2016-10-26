@@ -1,10 +1,9 @@
 from discord.ext import commands
-from .utils.dataIO import fileIO
+from cogs.utils.dataIO import dataIO
 import aiohttp
 import os
 from .utils import checks
 import datetime
-
 
 
 class Weather:
@@ -13,7 +12,7 @@ class Weather:
         self.settings_file = 'data/weather/weather.json'
 
     async def _get_local_time(self, lat, lng):
-        settings = fileIO(self.settings_file, "load")
+        settings = dataIO.load_json(self.settings_file)
         if 'TIME_API_KEY' in settings:
             api_key = settings['TIME_API_KEY']
             if api_key != '':
@@ -32,7 +31,7 @@ class Weather:
     @commands.command(pass_context=True, name='weather', aliases=['we'])
     async def _weather(self, context, *arguments: str):
         """Get the weather!"""
-        settings = fileIO(self.settings_file, "load")
+        settings = dataIO.load_json(self.settings_file)
         api_key = settings['WEATHER_API_KEY']
         if len(arguments) == 0:
             message = 'No location provided.'
@@ -69,19 +68,20 @@ class Weather:
     @checks.is_owner()
     async def _weatherkey(self, context, arguments: str):
         """Acquire a key from  http://openweathermap.org/"""
-        settings = fileIO(self.settings_file, "load")
+        settings = dataIO.load_json(self.settings_file)
         if arguments:
             settings['WEATHER_API_KEY'] = arguments[0]
-            fileIO(self.settings_file, "save", settings)
+            dataIO.save_json(self.settings_file, settings)
 
     @commands.command(pass_context=True, name='timekey')
     @checks.is_owner()
     async def _timekey(self, context, *arguments: str):
         """Acquire a key from https://timezonedb.com/api"""
-        settings = fileIO(self.settings_file, "load")
+        settings = dataIO.load_json(self.settings_file)
         if arguments:
             settings['TIME_API_KEY'] = arguments[0]
-            fileIO(self.settings_file, "save", settings)
+            dataIO.save_json(self.settings_file, settings)
+
 
 def check_folder():
     if not os.path.exists("data/weather"):
@@ -95,9 +95,9 @@ def check_file():
     weather['TIME_API_KEY'] = ''
 
     f = "data/weather/weather.json"
-    if not fileIO(f, "check"):
+    if not dataIO.is_valid_json(f):
         print("Creating default weather.json...")
-        fileIO(f, "save", weather)
+        dataIO.save_json(f, weather)
 
 
 def setup(bot):

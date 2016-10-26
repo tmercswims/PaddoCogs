@@ -1,17 +1,16 @@
 import discord
 import os
 from discord.ext import commands
-from .utils.dataIO import fileIO
+from cogs.utils.dataIO import dataIO
 from __main__ import send_cmd_help
+
 
 class BarPM:
     def __init__(self, bot):
         self.bot = bot
         self.drinkers = 'data/barpm/drinkers.json'
-        self.settings = fileIO("data/red/settings.json", "load")
-
+        self.settings = dataIO.load_json('data/red/settings.json')
         self.beverages = {}
-
         self.beverages['beer'] = {}
         self.beverages['beer']['NAME'] = 'Beer'
         self.beverages['beer']['EMOJI'] = 'Prost :beers:!'
@@ -54,7 +53,7 @@ class BarPM:
         if valid and not author.bot:
             for beverage in self.beverages:
                 if self.beverages[beverage]['NAME'].lower() in content.lower().split(" "):
-                    data = fileIO(self.drinkers, 'load')
+                    data = dataIO.load_json(self.drinkers)
                     for drinker in data:
                         if str(drinker) != str(author.id):
                             if beverage in data[drinker]['SUBS']:
@@ -83,18 +82,18 @@ class BarPM:
         """Subscribe to a beverage"""
         author = context.message.author
         beverage = beverage.lower()
-        data = fileIO(self.drinkers, 'load')
+        data = dataIO.load_json(self.drinkers)
         for item in self.beverages:
             if beverage in self.beverages[item]['NAME'].lower():
                 if author.id not in data:
                     data[author.id] = {}
                     data[author.id]['SUBS'] = []
-                if not item in data[author.id]['SUBS']:
+                if item not in data[author.id]['SUBS']:
                     data[author.id]['SUBS'].append(item)
                     message = '**I will serve this from now on.**'
                 else:
                     message = '**I am already serving you this.**'
-                fileIO(self.drinkers, 'save', data)
+                dataIO.save_json(self.drinkers, data)
                 break
             else:
                 message = '**I do not serve this beverage.**'
@@ -105,7 +104,7 @@ class BarPM:
         """Unsubscribe to a beverage"""
         author = context.message.author
         beverage = beverage.lower()
-        data = fileIO(self.drinkers, 'load')
+        data = dataIO.load_json(self.drinkers)
         for item in self.beverages:
             if beverage in self.beverages[item]['NAME'].lower():
                 if author.id in data:
@@ -113,7 +112,7 @@ class BarPM:
                         print(data[author.id]['SUBS'])
                         i = data[author.id]['SUBS'].index(item)
                         del data[author.id]['SUBS'][i]
-                        fileIO(self.drinkers, 'save', data)
+                        dataIO.save_json(self.drinkers, data)
                         message = '**I will stop serving you this.**'
                     else:
                         message = '**I am not serving this beverage to you.**'
@@ -125,17 +124,20 @@ class BarPM:
                 message = '**I do not serve this beverage.**'
         await self.bot.say(message)
 
+
 def check_folder():
     if not os.path.exists('data/barpm'):
         print('Creating data/barpm folder...')
         os.makedirs('data/barpm')
 
+
 def check_file():
     data = {}
     f = 'data/barpm/drinkers.json'
-    if not fileIO(f, 'check'):
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, data)
         print('Creating default drinkers.json...')
-        fileIO(f, 'save', data)
+
 
 def setup(bot):
     check_folder()

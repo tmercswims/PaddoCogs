@@ -1,11 +1,12 @@
 class Caramba:
-	def __init__(self, bot):
-		self.bot = bot
+    def __init__(self, bot):
+        self.bot = bot
 
-	async def listener(self, message):
-		if message.author.id != self.bot.user.id:
-			if message.content.lower().startswith('ayy') or message.content.lower().startswith('aayy'):
-				await self.bot.send_message(message.channel, '¡Caramba!')
+    async def listener(self, message):
+        if message.author.id != self.bot.user.id:
+            if message.content.lower().startswith('ayy') or message.content.lower().startswith('aayy'):
+                await self.bot.send_message(message.channel, '¡Caramba!')
+
 
 def setup(bot):
     n = Caramba(bot)
