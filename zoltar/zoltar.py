@@ -11,8 +11,7 @@ class Zoltar:
     @commands.command(name='zoltar')
     async def _zoltar(self):
         message = random.choice(self._fortunes)
-        lucky_number = lambda: random.randint(0, 100)
-        await self.bot.say('_{}_\n*Your Lucky Numbers: _{}, {}, {}, {}, {}, {}_*'.format(message, lucky_number, lucky_number, lucky_number, lucky_number, lucky_number, lucky_number))
+        await self.bot.say('_{}_\n*Your Lucky Numbers: _{}, {}, {}, {}, {}, {}_*'.format(message, random.randint(1, 100), random.randint(1, 100), random.randint(1, 100), random.randint(1, 100), random.randint(1, 100), random.randint(1, 100)))
 
 
 def setup(bot):
