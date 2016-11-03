@@ -7,7 +7,7 @@ import os
 class Geordiespeak:
     def __init__(self, bot):
         self.bot = bot
-        self.geordie = dataIO.load_json('data/downloader/paddo-cogs/geordiespeal/data/geordie.json')
+        self.geordie = dataIO.load_json('data/geordiespeak/geordie.json')
         self.data = dataIO.load_json('data/geordiespeak/settings.json')
 
     @commands.command(pass_context=True, no_pm=True, name='geordietoggle')
