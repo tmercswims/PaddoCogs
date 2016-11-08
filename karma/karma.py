@@ -46,6 +46,7 @@ class karma:
                         data[author.id]['USERNAME'] = author.display_name
                     elif not data[author.id]['IGNORE']:
                         data[author.id]['KARMA'] += int(len(content))
+                    data[author.id]['USERNAME'] = author.display_name
                 dataIO.save_json(filename, data)
 
     @commands.group(pass_context=True, name='karma')
