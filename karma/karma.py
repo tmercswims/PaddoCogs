@@ -31,7 +31,7 @@ class karma:
                 filename = 'data/karma/{}.json'.format(server.id)
                 if not dataIO.is_valid_json(filename):
                     data = {}
-                    dataIO.save_json(filename)
+                    dataIO.save_json(filename, data)
                 else:
                     data = dataIO.load_json(filename)
                 valid = True
@@ -44,7 +44,8 @@ class karma:
                         data[author.id]['IGNORE'] = False
                         data[author.id]['KARMA'] = 0
                         data[author.id]['USERNAME'] = author.display_name
-                    data[author.id]['KARMA'] += int(len(content))
+                    elif not data[author.id]['IGNORE']:
+                        data[author.id]['KARMA'] += int(len(content))
                 dataIO.save_json(filename, data)
 
     @commands.group(pass_context=True, name='karma')
