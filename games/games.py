@@ -34,7 +34,6 @@ class Games:
                     data[game[0]] += 1
                 else:
                     data[after.game.name] = 1
-
                 dataIO.save_json(filename, data)
 
     @commands.command(pass_context=True, no_pm=True, name='games')
