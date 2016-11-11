@@ -26,12 +26,14 @@ class Games:
                     dataIO.save_json(filename, data)
                 else:
                     data = dataIO.load_json(filename)
-                if after.game.name.upper() in data:
-                    game = False
+                if after.game.name in data:
+                    t = True
                 else:
                     game = [game for game in data if self.match(game.upper(), after.game.name.upper()) > 0.89]
                 if game:
                     data[game[0]] += 1
+                elif t:
+                    data[after.game.name] += 1
                 else:
                     data[after.game.name] = 1
                 dataIO.save_json(filename, data)
