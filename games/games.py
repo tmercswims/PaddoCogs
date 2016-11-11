@@ -14,11 +14,6 @@ class Games:
     async def listener(self, before, after):
         server = after.server
         filename = 'data/games/{}.json'.format(server.id)
-        if not dataIO.is_valid_json(filename):
-            data = {}
-            dataIO.save_json(filename, data)
-        else:
-            data = dataIO.load_json(filename)
         if not after.bot and after.game is not None:
             if before.game is None:
                 before_game = ''
@@ -26,12 +21,21 @@ class Games:
                 before_game = before.game.name
             match = self.match(before_game, after.game.name)
             if match < 0.89 and len(after.game.name) > 2:
-                game = [game for game in data if self.match(game.upper(), after.game.name.upper()) > 0.89]
+                if not dataIO.is_valid_json(filename):
+                    data = {}
+                    dataIO.save_json(filename, data)
+                else:
+                    data = dataIO.load_json(filename)
+                if after.game.name.upper() in data:
+                    game = False
+                else:
+                    game = [game for game in data if self.match(game.upper(), after.game.name.upper()) > 0.89]
                 if game:
                     data[game[0]] += 1
                 else:
                     data[after.game.name] = 1
-            dataIO.save_json(filename, data)
+
+                dataIO.save_json(filename, data)
 
     @commands.command(pass_context=True, no_pm=True, name='games')
     async def _games(self, context):
