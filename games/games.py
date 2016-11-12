@@ -7,6 +7,9 @@ from difflib import SequenceMatcher
 class Games:
     def __init__(self, bot):
         self.bot = bot
+        self.servers = {}
+        for server in os.listdir('data/games'):
+            self.servers[server.split('.')[0]] = dataIO.load_json('data/games/{}'.format(server))
 
     def match(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
@@ -15,27 +18,26 @@ class Games:
         server = after.server
         filename = 'data/games/{}.json'.format(server.id)
         if not after.bot and after.game is not None:
-            if before.game is None:
-                before_game = ''
-            else:
-                before_game = before.game.name
-            match = self.match(before_game, after.game.name)
-            if match < 0.89 and len(after.game.name) > 2:
+            if len(after.game.name) > 2:
                 if not dataIO.is_valid_json(filename):
                     data = {}
-                    dataIO.save_json(filename, data)
                 else:
-                    data = dataIO.load_json(filename)
-                if after.game.name in data:
-                    t = True
+                    try:
+                        data = self.servers[server.id]
+                    except KeyError:
+                        data = {}
+                game = after.game.name
+                if game in data:
+                    data[game] += 1
                 else:
-                    game = [game for game in data if self.match(game.upper(), after.game.name.upper()) > 0.89]
-                if game:
-                    data[game[0]] += 1
-                elif t:
-                    data[after.game.name] += 1
-                else:
-                    data[after.game.name] = 1
+                    new = True
+                    for g in data:
+                        if self.match(g.upper(), after.game.name.upper()) > 0.89:
+                            data[g] += 1
+                            new = False
+                            break
+                    if new:
+                        data[game] = 1
                 dataIO.save_json(filename, data)
 
     @commands.command(pass_context=True, no_pm=True, name='games')
