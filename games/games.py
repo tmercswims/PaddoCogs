@@ -18,7 +18,11 @@ class Games:
         server = after.server
         filename = 'data/games/{}.json'.format(server.id)
         if not after.bot and after.game is not None:
-            if len(after.game.name) > 2:
+            p = True
+            if before.game is not None and after.game is not None:
+                if before.game.name == after.game.name:
+                    p = False
+            if len(after.game.name) > 2 and p:
                 if not dataIO.is_valid_json(filename):
                     data = {}
                 else:
