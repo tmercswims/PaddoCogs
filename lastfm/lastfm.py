@@ -280,6 +280,7 @@ Will remember your username after setting one. [p]lastfm last @username will bec
         settings = dataIO.load_json(self.settings_file)
         if key:
             settings['LASTFM_API_KEY'] = key[0]
+            self.api_key = key[0]
             dataIO.save_json(self.settings_file, settings)
             await self.bot.say('```Done```')
 
