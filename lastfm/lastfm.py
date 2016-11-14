@@ -297,7 +297,7 @@ def check_file():
     f = "data/lastfm/lastfm.json"
     if not dataIO.is_valid_json(f):
         print("Creating default lastfm.json...")
-        dataIO.save_json(f)
+        dataIO.save_json(f, data)
 
 
 def setup(bot):
