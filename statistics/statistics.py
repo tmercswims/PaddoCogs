@@ -37,7 +37,7 @@ class Statistics:
         Retreive statistics
         """
         message = await self.retrieve_statistics()
-        await self.bot.say(message)
+        await self.bot.say(embed=message)
 
     @commands.command()
     async def statsrefresh(self, seconds: int):
@@ -99,24 +99,32 @@ class Statistics:
             elif channel.type == discord.ChannelType.voice:
                 voice_channels += 1
         channels = text_channels + voice_channels
-        message = '**{}** has been up for **{} days, {} hours, and {} minutes**'.format(name, str(days), str(hours), str(minutes))
-        message += '\n\n'
-        message += 'Connected to **{}** servers'.format(servers)
-        message += '\n'
-        message += 'Seen **{}** users'.format(users)
-        message += '\n'
-        message += 'In **{}** channels (**{}** text, **{}** voice)'.format(str(channels), str(text_channels), str(voice_channels))
-        message += '\n'
-        message += '**{}** messages received and **{}** messages sent'.format(str(self.received_messages), str(self.sent_messages))
-        message += '\n'
-        message += '**{}** active cogs with **{}** commands'.format(str(len(self.bot.cogs)), str(len(self.bot.commands)))
-        message += '\n'
-        message += 'API version **{}**'.format(discord.__version__)
-        message += '\n\n'
-        message += 'CPU Usage: **{0:.1f}**%'.format(cpu_usage)
-        message += '\n'
-        message += 'Memory Usage: **{0:.1f}**%'.format(mem_v.percent)
-        return message
+
+        em = discord.Embed(color=discord.Color.red())
+        avatar = self.bot.user.avatar_url if self.bot.user.avatar else self.bot.user.default_avatar_url
+        em.set_author(name='Statistics of {}'.format(name), icon_url=avatar)
+        em.add_field(name='\a', value='\a', inline=False)
+        em.add_field(name='**Uptime**', value='{} D - {} H - {} M'.format(str(days), str(hours), str(minutes)))
+
+        em.add_field(name='**Users**', value=users)
+        em.add_field(name='**Servers**', value=servers)
+
+        em.add_field(name='**Channels**', value=str(channels))
+        em.add_field(name='**Text channels**', value=str(text_channels))
+        em.add_field(name='**Voice channels**', value=str(voice_channels))
+
+        em.add_field(name='**Messages received**', value=str(self.received_messages))
+        em.add_field(name='**Messages sent**', value=str(self.sent_messages))
+        em.add_field(name='\a', value='\a')
+        em.add_field(name='**Active cogs**', value=str(len(self.bot.cogs)))
+        em.add_field(name='**Commands**', value=str(len(self.bot.commands)))
+        em.add_field(name='\a', value='\a')
+        em.add_field(name='\a', value='\a', inline=False)
+        em.add_field(name='**CPU usage**', value='{0:.1f}%'.format(cpu_usage))
+        em.add_field(name='**Memory usage**', value='{0:.1f}%'.format(mem_v.percent))
+        em.add_field(name='\a', value='\a')
+        em.set_footer(text='API version {}'.format(discord.__version__))
+        return em
 
     async def incoming_messages(self, message):
         if message.author.id == self.bot.user.id:
@@ -137,9 +145,9 @@ class Statistics:
                 async for message in self.bot.logs_from(channel, limit=1):
                     messages = True
                     if message.author.name == self.bot.user.name:
-                        await self.bot.edit_message(message, msg)
+                        await self.bot.edit_message(message, embed=msg)
                 if not messages:
-                    await self.bot.send_message(channel, msg)
+                    await self.bot.send_message(channel, embed=msg)
             else:
                 pass
             await asyncio.sleep(self.refresh_rate)
