@@ -1,6 +1,7 @@
 import os
 import re
 import aiohttp
+import discord
 from .utils import checks
 from discord.ext import commands
 from __main__ import send_cmd_help
@@ -65,8 +66,13 @@ class Goodreads:
                 for author in book['authors']['author']:
                     authors += '{} ({}), '.format(author['name'], author['average_rating'])
                 authors = authors[:-2]
-            backtrack = '```{}\n\nPublished: {}\nAuthors: {}\nRating: {}\n\n{}\n\nRead more at: {}```'.format(book_title, book_published, authors, book_rating, book_description, book_url)
-            return backtrack
+            em = discord.Embed(title=book_title, description='\a\n', color=discord.Color.blue(), url=book_url)
+            em.add_field(name='**Author**', value=authors)
+            em.add_field(name='**Published**', value=book_published)
+            em.add_field(name='**Rating**', value=book_rating)
+            em.add_field(name='\a', value=book_description, inline=False)
+            em.set_footer(text='Information provided by Goodreads', icon_url='https://s.gr-assets.com/assets/icons/goodreads_icon_16x16-fc141070fc3ea1a7cd145a4af570ec14.png')
+            return em
         else:
             return '**I couldn\'t find that!**'
 
@@ -75,9 +81,10 @@ class Goodreads:
         if search:
             if self.key:
                 message = await self._query_search(search)
+                await self.bot.say(embed=message)
             else:
                 message = 'No API key set!'
-            await self.bot.say('{}'.format(message))
+                await self.bot.say('{}'.format(message))
         else:
             await send_cmd_help(context)
 

@@ -35,10 +35,14 @@ class Seen:
             ts = data['TIMESTAMP']
             last_message = data['MESSAGE']
             channel = data['CHANNEL']
-            message = '{} was last seen on `{} UTC` in {} saying: {}'.format(author.display_name, ts, channel, last_message)
+            em = discord.Embed(description='\a\n{}'.format(last_message), color=discord.Color.green())
+            avatar = author.avatar_url if author.avatar else author.default_avatar_url
+            em.set_author(name='{} was last seen on {} UTC'.format(author.display_name, ts), icon_url=avatar)
+            em.add_field(name='\a', value='**Channel:** {}'.format(channel))
+            await self.bot.say(embed=em)
         else:
             message = 'I haven\'t seen {} yet.'.format(author.display_name)
-        await self.bot.say('{}'.format(message))
+            await self.bot.say('{}'.format(message))
 
 
 def check_folder():

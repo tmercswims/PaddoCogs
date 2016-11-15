@@ -1,6 +1,7 @@
 from cogs.utils.dataIO import dataIO
 from discord.ext import commands
 import aiohttp
+import discord
 import difflib
 import os
 import re
@@ -107,18 +108,29 @@ class Steam:
         if match:
             info = await self._app_info(match['appid'])
             if info:
-                message = '\n{}\n\nGenres: {}\n\nRelease date: {}\nDeveloped by {}\nPublished by {}\n\nPrice: {}\n\n{}'.format(match['name'], ", ".join([genre['description'] for genre in info['genres']]), info['release_date'], ", ".join([developer for developer in info['developers']]), ", ".join([publisher for publisher in info['publishers']]), info['price'], info['about_the_game'])
-                message = '```{}\n\nhttp://store.steampowered.com/app/{}```'.format(message, match['appid'])
+                em = discord.Embed(title='{}'.format(match['name']), color=discord.Color.blue(), url='http://store.steampowered.com/app/{}'.format(match['appid']))
+                em.add_field(name='\a', value='\a', inline=False)
+                em.add_field(name='**Price**', value=info['price'])
+                em.add_field(name='**Genre**', value=', '.join([genre['description'] for genre in info['genres']]))
+                em.add_field(name='\a', value='\a')
+                em.add_field(name='**Release date**', value=info['release_date'])
+                em.add_field(name='**Developed by**', value=', '.join([developer for developer in info['developers']]))
+                em.add_field(name='**Published by**', value=', '.join([publisher for publisher in info['publishers']]))
+                em.add_field(name='\a', value=info['about_the_game'], inline=False)
+                em.set_footer(text='Information provided by Steam', icon_url='http://store.akamai.steamstatic.com/public/shared/images/header/globalheader_logo.png')
+                await self.bot.say(embed=em)
             else:
                 message = '`Game was found, but could not retrive information`'
+                await self.bot.say(message)
         elif games:
             message = '```This game was not found. But I found close matches:\n\n'
             for game in games:
                 message += '{}\n'.format(game['name'])
             message += '```'
+            await self.bot.say(message)
         else:
             message = '`This game could not be found`'
-        await self.bot.say(message)
+            await self.bot.say(message)
 
     @commands.command(pass_context=True, no_pm=True, name='steamupdate', aliases=['stupdate'])
     async def _update(self, context):
