@@ -60,7 +60,7 @@ class BarPM:
                                 beverage_name = self.beverages[beverage]['NAME']
                                 beverage_emoji = self.beverages[beverage]['EMOJI']
                                 message = '{} wants to give you {}! {}'.format(author.name, beverage_name, beverage_emoji)
-                                user = discord.utils.get(self.bot.private_channels, user__id=str(drinker))
+                                user = discord.utils.get(self.bot.get_all_members, user__id=str(drinker))
                                 await self.bot.send_message(user, message)
 
     @commands.group(pass_context=True, no_pm=True, name='bar', aliases=['pub'])

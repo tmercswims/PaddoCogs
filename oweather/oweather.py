@@ -4,6 +4,7 @@ import aiohttp
 import os
 from .utils import checks
 import datetime
+import discord
 
 
 class Weather:
@@ -25,7 +26,7 @@ class Weather:
                     parse = await r.json()
                 session.close()
                 if parse['status'] == 'OK':
-                    return datetime.datetime.fromtimestamp(int(parse['timestamp'])-7200).strftime('%Y-%m-%d %H:%M:%S')
+                    return datetime.datetime.fromtimestamp(int(parse['timestamp'])-7200).strftime('%Y-%m-%d %H:%M')
         return
 
     @commands.command(pass_context=True, name='weather', aliases=['we'])
@@ -56,13 +57,27 @@ class Weather:
                 wind_kmh = str(round(parse['wind']['speed'] * 3.6)) + ' km/h'
                 wind_mph = str(round(parse['wind']['speed'] * 2.23694)) + ' mph'
                 clouds = parse['weather'][0]['description'].title()
+                icon = parse['weather'][0]['icon']
                 name = parse['name'] + ', ' + parse['sys']['country']
-                message = 'Weather in {0}\nLocal time: {7}\n{1}, {2}\nWind: {3} / {4}\nPressure: {5}\nHumidity: {6}'.format(name, clouds, temperature, wind_kmh, wind_mph, pressure, humidity, local_time)
+                city_id = parse['id']
+                em = discord.Embed(color=discord.Color.blue())
+                em.set_author(name='Weather in {} - {}'.format(name, local_time), icon_url='https://openweathermap.org/img/w/{}.png'.format(icon), url='https://openweathermap.org/city/{}'.format(city_id))
+                em.add_field(name='**Conditions**', value=clouds)
+                em.add_field(name='**Temperature**', value=temperature)
+                em.add_field(name='\a', value='\a')
+                em.add_field(name='**Wind**', value='{} / {}'.format(wind_kmh, wind_mph))
+                em.add_field(name='**Pressure**', value=pressure)
+                em.add_field(name='**Humidity**', value=humidity)
+                em.set_image(url='https://openweathermap.org/img/w/{}.png'.format(icon), width=50, height=50)
+                em.set_thumbnail(url='https://openweathermap.org/img/w/{}.png'.format(icon), width=50, height=50)
+                em.set_footer(text='Weather data provided by OpenWeatherMap', icon_url='http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png')
+                await self.bot.say(embed=em)
             except KeyError:
                 message = 'Location not found.'
+                await self.bot.say('```{}```'.format(message))
         else:
             message = 'No API key set. Get one at http://openweathermap.org/'
-        await self.bot.say('```{0}```'.format(message))
+            await self.bot.say('```{}```'.format(message))
 
     @commands.command(pass_context=True, name='weatherkey')
     @checks.is_owner()
