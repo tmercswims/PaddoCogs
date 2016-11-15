@@ -102,8 +102,8 @@ class Statistics:
 
         em = discord.Embed(color=discord.Color.red())
         avatar = self.bot.user.avatar_url if self.bot.user.avatar else self.bot.user.default_avatar_url
-        em.set_author(name='Statistics of {}'.format(name), icon_url=avatar)
-        em.add_field(name='\a', value='\a', inline=False)
+        em.set_author(name='Statistics of {}'.format(name), description='\a\n', icon_url=avatar)
+
         em.add_field(name='**Uptime**', value='{} D - {} H - {} M'.format(str(days), str(hours), str(minutes)))
 
         em.add_field(name='**Users**', value=users)
@@ -116,12 +116,15 @@ class Statistics:
         em.add_field(name='**Messages received**', value=str(self.received_messages))
         em.add_field(name='**Messages sent**', value=str(self.sent_messages))
         em.add_field(name='\a', value='\a')
+
         em.add_field(name='**Active cogs**', value=str(len(self.bot.cogs)))
         em.add_field(name='**Commands**', value=str(len(self.bot.commands)))
         em.add_field(name='\a', value='\a')
+
         em.add_field(name='\a', value='\a', inline=False)
         em.add_field(name='**CPU usage**', value='{0:.1f}%'.format(cpu_usage))
         em.add_field(name='**Memory usage**', value='{0:.1f}%'.format(mem_v.percent))
+
         em.add_field(name='\a', value='\a')
         em.set_footer(text='API version {}'.format(discord.__version__))
         return em
