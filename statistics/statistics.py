@@ -100,9 +100,9 @@ class Statistics:
                 voice_channels += 1
         channels = text_channels + voice_channels
 
-        em = discord.Embed(color=discord.Color.red())
+        em = discord.Embed(description='\a\n', color=discord.Color.red())
         avatar = self.bot.user.avatar_url if self.bot.user.avatar else self.bot.user.default_avatar_url
-        em.set_author(name='Statistics of {}'.format(name), description='\a\n', icon_url=avatar)
+        em.set_author(name='Statistics of {}'.format(name), icon_url=avatar)
 
         em.add_field(name='**Uptime**', value='{} D - {} H - {} M'.format(str(days), str(hours), str(minutes)))
 
