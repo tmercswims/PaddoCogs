@@ -68,7 +68,7 @@ class Weather:
                 em.add_field(name='**Pressure**', value=pressure)
                 em.add_field(name='**Humidity**', value=humidity)
                 em.set_thumbnail(url='https://openweathermap.org/img/w/{}.png'.format(icon), width=50, height=50)
-                em.add_field(name='\a', value'\a')
+                em.add_field(name='\a', value='\a')
                 em.set_footer(text='Weather data provided by OpenWeatherMap', icon_url='http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png')
                 await self.bot.say(embed=em)
             except KeyError:
