@@ -60,8 +60,7 @@ class Weather:
                 icon = parse['weather'][0]['icon']
                 name = parse['name'] + ', ' + parse['sys']['country']
                 city_id = parse['id']
-                em = discord.Embed(color=discord.Color.blue())
-                em.set_author(name='Weather in {} - {}'.format(name, local_time), icon_url='https://openweathermap.org/img/w/{}.png'.format(icon), url='https://openweathermap.org/city/{}'.format(city_id))
+                em = discord.Embed(title=name='Weather in {} - {}'.format(name, local_time), color=discord.Color.blue(), url='https://openweathermap.org/city/{}'.format(city_id))
                 em.add_field(name='**Conditions**', value=clouds)
                 em.add_field(name='**Temperature**', value=temperature)
                 em.add_field(name='\a', value='\a')
@@ -69,6 +68,7 @@ class Weather:
                 em.add_field(name='**Pressure**', value=pressure)
                 em.add_field(name='**Humidity**', value=humidity)
                 em.set_thumbnail(url='https://openweathermap.org/img/w/{}.png'.format(icon), width=50, height=50)
+                em.add_field(name='\a', value'\a')
                 em.set_footer(text='Weather data provided by OpenWeatherMap', icon_url='http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png')
                 await self.bot.say(embed=em)
             except KeyError:
