@@ -16,11 +16,7 @@ class Calculator:
         calculate_stuff = eval(''.join(math_filter))
         if len(str(calculate_stuff)) > 0:
             em = discord.Embed(color=discord.Color.blue(), description='**Input**\n`{}`\n\n**Result**\n`{}`'.format(m, calculate_stuff))
-            # em.add_field(inline=False, name='Input', value=m)
-            # em.add_field(inline=False, name='\a', value='\a')
-            # em.add_field(inline=False, name='Result', value=calculate_stuff)
             await self.bot.say(embed=em)
-            # await self.bot.say(calculate_stuff)
 
 
 def setup(bot):
