@@ -3,6 +3,7 @@ from cogs.utils.dataIO import dataIO
 from discord.ext import commands
 from .utils import checks
 import aiohttp
+import discord
 import re
 import os
 
@@ -76,7 +77,7 @@ class YouTube:
         return result
 
     @commands.command(pass_context=True, name='youtube', no_pm=True)
-    async def _youtube(self, context, *query: str):
+    async def _youtube(self, context, *, query: str):
         """Search on Youtube"""
         try:
             url = 'https://www.youtube.com/results?'
@@ -90,10 +91,16 @@ class YouTube:
             yt_find = re.findall(r'href=\"\/watch\?v=(.{11})', result)
             url = 'https://www.youtube.com/watch?v={}'.format(yt_find[0])
             metadata = await self.get_song_metadata(url)
-            message = '**Title:** _{}_\n**Uploader:** _{}_\n\n{}'.format(metadata['title'], metadata['author_name'], url)
+            em = discord.Embed(title=metadata['author_name'], color=discord.Color.red(), url=metadata['author_url'])
+            em.set_author(name=metadata['title'], url=url)
+            em.set_image(url=metadata['thumbnail_url'], width=metadata['thumbnail_width'], height=metadata['height'])
+            # em.video.url = url
+            # em.video.width = 480
+            # em.video.height = 270
+            await self.bot.say(embed=em)
         except Exception as e:
             message = 'Something went terribly wrong! [{}]'.format(e)
-        await self.bot.say(message)
+            await self.bot.say(message)
 
     @commands.group(pass_context=True, name='youtubetoggle', aliases=['ytoggle'])
     @checks.mod_or_permissions(administrator=True)
