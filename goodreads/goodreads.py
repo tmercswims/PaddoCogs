@@ -71,6 +71,7 @@ class Goodreads:
             em.add_field(name='**Published**', value=book_published)
             em.add_field(name='**Rating**', value=book_rating)
             em.add_field(name='\a', value=book_description, inline=False)
+            em.add_field(name='\a', value='\a', inline=False)
             em.set_footer(text='Information provided by Goodreads', icon_url='https://s.gr-assets.com/assets/icons/goodreads_icon_16x16-fc141070fc3ea1a7cd145a4af570ec14.png')
             return em
         else:
