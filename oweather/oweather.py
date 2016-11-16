@@ -60,7 +60,7 @@ class Weather:
                 icon = parse['weather'][0]['icon']
                 name = parse['name'] + ', ' + parse['sys']['country']
                 city_id = parse['id']
-                em = discord.Embed(title='Weather in {} - {}'.format(name, local_time), color=discord.Color.blue(), url='https://openweathermap.org/city/{}'.format(city_id))
+                em = discord.Embed(title='Weather in {} - {}'.format(name, local_time), color=discord.Color.blue(), description='\a\n', url='https://openweathermap.org/city/{}'.format(city_id))
                 em.add_field(name='**Conditions**', value=clouds)
                 em.add_field(name='**Temperature**', value=temperature)
                 em.add_field(name='\a', value='\a')
