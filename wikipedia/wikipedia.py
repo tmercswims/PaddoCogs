@@ -31,7 +31,6 @@ class Wikipedia:
             async with session.get(url, params=payload, headers=headers) as r:
                 result = await r.json()
             session.close()
-            print(result)
             if '-1' not in result['query']['pages']:
                 for page in result['query']['pages']:
                     title = result['query']['pages'][page]['title']
@@ -40,7 +39,7 @@ class Wikipedia:
                 em.set_footer(text='Information provided by Wikimedia', icon_url='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Wikimedia-logo.png/600px-Wikimedia-logo.png')
                 await self.bot.say(embed=em)
             else:
-                message = 'I\'m sorry, I can\'t find {}'.format(" ".join(query))
+                message = 'I\'m sorry, I can\'t find {}'.format(''.join(query))
                 await self.bot.say('```{}```'.format(message))
         except Exception as e:
             message = 'Something went terribly wrong! [{}]'.format(e)
