@@ -17,7 +17,7 @@ class Away:
             data = dataIO.load_json(self.away_data)
             for mention in tmp:
                 if mention.mention in data:
-                    if data[mention.mention]['MESSAGE']:
+                    if data[mention.mention]['MESSAGE'] is None:
                         msg = '{} is currently away.'.format(mention.name)
                     else:
                         msg = '{} is currently away and has set a personal message: {}'.format(mention.name, data[mention.mention]['MESSAGE'])
@@ -33,13 +33,13 @@ class Away:
             msg = 'You\'re now back.'
         else:
             data[context.message.author.mention] = {}
-            if len(str(message)) < 256:
+            if 0 < len(message) < 256:
                 data[context.message.author.mention]['MESSAGE'] = " ".join(context.message.clean_content.split()[1:])
             else:
-                data[context.message.author.mention]['MESSAGE'] = True
+                data[context.message.author.mention]['MESSAGE'] = None
             msg = 'You\'re now set as away.'
         dataIO.save_json(self.away_data, data)
-        await self.bot.say(msg)
+        await self.bot.reply(msg)
 
 
 def check_folder():
